@@ -7,7 +7,6 @@ import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import satori from 'satori';
 import sharp from 'sharp';
-import { markSvg } from '../lib/mark';
 import { site } from '../config/site';
 
 type Node = { type: string; props: Record<string, unknown> & { children?: unknown } };
@@ -24,7 +23,8 @@ export const GET: APIRoute = async () => {
     font('@fontsource/cormorant-sc/files/cormorant-sc-latin-700-normal.woff'),
   ]);
 
-  const mark = `data:image/svg+xml;base64,${Buffer.from(markSvg({ size: 300 })).toString('base64')}`;
+  const logoPng = await readFile(join(process.cwd(), 'src/assets/logo-transparent.png'));
+  const logo = `data:image/png;base64,${logoPng.toString('base64')}`;
   const dots = `data:image/svg+xml;base64,${Buffer.from(
     `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"><circle cx="9" cy="9" r="2.2" fill="#EC008C" fill-opacity="0.22"/></svg>`,
   ).toString('base64')}`;
@@ -40,18 +40,12 @@ export const GET: APIRoute = async () => {
         h('div', { flex: 1, background: '#FFD400' }),
         h('div', { flex: 1, background: '#141414' }),
       ]),
-      h('div', { display: 'flex', flex: 1, padding: '56px 72px 48px', alignItems: 'center', gap: 56 }, [
+      h('div', { display: 'flex', flex: 1, padding: '44px 72px 40px', alignItems: 'center', gap: 56 }, [
         h('div', { display: 'flex', flexDirection: 'column', flex: 1 }, [
-          h('div', { display: 'flex', alignItems: 'center', gap: 18 }, [
-            h('img', { width: 84, height: 84 }, undefined, { src: mark, width: 84, height: 84 }),
-            h('div', { display: 'flex', flexDirection: 'column' }, [
-              h('div', { fontSize: 64, lineHeight: 1, color: '#141414', letterSpacing: -1 }, 'NVA'),
-              h('div', { fontFamily: 'Cormorant', fontSize: 22, letterSpacing: 5, color: '#141414', marginTop: 4 }, 'PRINTING SERVICES'),
-            ]),
-          ]),
-          h('div', { fontSize: 66, lineHeight: 1.04, color: '#141414', marginTop: 44, letterSpacing: -1, display: 'flex', flexWrap: 'wrap' }, [
+          h('img', { width: 272, height: 140 }, undefined, { src: logo, width: 272, height: 140 }),
+          h('div', { fontSize: 66, lineHeight: 1.04, color: '#141414', marginTop: 36, letterSpacing: -1, display: 'flex', flexWrap: 'wrap' }, [
             h('span', {}, 'One stop shop for your '),
-            h('span', { borderBottom: '10px solid #EC008C', paddingBottom: 0 }, 'printing'),
+            h('span', { borderBottom: '10px solid #FF00CC', paddingBottom: 0 }, 'printing'),
             h('span', {}, ' needs.'),
           ]),
           h(

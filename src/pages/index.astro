@@ -10,7 +10,8 @@ import Icon from '../components/Icon.astro';
 import InkDrop from '../components/InkDrop.astro';
 import RegMark from '../components/RegMark.astro';
 import ColorBar from '../components/ColorBar.astro';
-import Logo from '../components/Logo.astro';
+import { Image } from 'astro:assets';
+import logo from '../assets/logo-transparent.png';
 import Photo from '../components/Photo.astro';
 import SectionHeading from '../components/SectionHeading.astro';
 import DropList from '../components/DropList.astro';
@@ -75,22 +76,28 @@ const steps = [
         </ul>
       </div>
 
-      <!-- Press-sheet artwork: the logo mark as overlapping process inks -->
+      <!-- Press-sheet proof showing the official logo -->
       <div class="relative mx-auto w-full max-w-md lg:max-w-none" aria-hidden="true">
         <div class="crop-marks relative rounded-card border border-line bg-paper p-6 shadow-[0_24px_60px_-30px_rgba(20,20,20,0.35)] sm:p-8">
           <div class="flex items-center justify-between text-[0.7rem] font-semibold tracking-[0.18em] text-grey uppercase">
             <span>Proof · Sheet 01</span>
             <RegMark class="size-5 text-ink" />
           </div>
-          <div class="relative my-6 flex h-52 items-end justify-center sm:h-64">
-            <div class="halftone absolute inset-x-6 inset-y-2 rounded-full text-cyan opacity-25"></div>
-            <InkDrop fill="cyan" class="drop-a relative h-40 w-auto mix-blend-multiply sm:h-52" />
-            <InkDrop fill="magenta" class="drop-b relative -ml-14 h-44 w-auto mix-blend-multiply sm:-ml-[4.5rem] sm:h-56" />
-            <InkDrop fill="yellow" class="drop-c relative -ml-14 h-40 w-auto mix-blend-multiply sm:-ml-[4.5rem] sm:h-52" />
+          <div class="relative my-6">
+            <div class="halftone absolute -inset-2 text-cyan opacity-20"></div>
+            <Image
+              src={logo}
+              alt=""
+              widths={[480, 640, 828]}
+              sizes="(min-width: 1024px) 440px, (min-width: 480px) 400px, calc(100vw - 96px)"
+              loading="eager"
+              fetchpriority="high"
+              class="relative h-auto w-full"
+            />
           </div>
-          <div class="flex items-end justify-between gap-4 border-t border-dashed border-line pt-5">
-            <Logo id="logo-hero" />
-            <ColorBar class="mb-1 hidden h-4 w-24 xs:inline-flex" tints />
+          <div class="flex items-center justify-between gap-4 border-t border-dashed border-line pt-5 text-[0.7rem] font-semibold tracking-[0.18em] text-grey uppercase">
+            <span>C · M · Y · K</span>
+            <ColorBar class="h-4 w-28" tints />
           </div>
         </div>
         <div class="absolute -top-4 -right-2 rotate-6 rounded-card bg-yellow px-3 py-1.5 font-display text-sm shadow-md sm:-right-4">
@@ -253,25 +260,3 @@ const steps = [
 
   <CtaBand />
 </Base>
-
-<style>
-  @media (prefers-reduced-motion: no-preference) {
-    .drop-a,
-    .drop-b,
-    .drop-c {
-      animation: drip 0.9s cubic-bezier(0.2, 0.8, 0.2, 1.2) both;
-    }
-    .drop-b {
-      animation-delay: 0.12s;
-    }
-    .drop-c {
-      animation-delay: 0.24s;
-    }
-    @keyframes drip {
-      from {
-        transform: translateY(-18px);
-        opacity: 0;
-      }
-    }
-  }
-</style>

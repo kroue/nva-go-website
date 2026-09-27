@@ -37,7 +37,7 @@ Everything editable lives in `src/config/` and `src/data/`. Components only rend
 
 | File | Contents |
 | --- | --- |
-| `src/config/site.ts` | Business name, address, map link, hours, phone numbers, emails, Facebook/Messenger, Shopee/Lazada links, the one real review, navigation, and the launch switches (`DEMO_MODE`, `NVAGO_URL`, `PRICE_PER_SQFT`, `SITE_URL`) |
+| `src/config/site.ts` | Business name, address, map link, Google profile link, hours, phone numbers, emails, Facebook/Messenger, Shopee/Lazada links, the one real review, navigation, and the launch switches (`DEMO_MODE`, `NVAGO_URL`, `PRICE_PER_SQFT`, `SITE_URL`) |
 | `src/data/products.ts` | Product categories and items |
 | `src/data/jobs.ts` | Job openings for the Careers page |
 | `src/data/faq.ts` | FAQ (home page + FAQPage structured data) |
@@ -88,9 +88,9 @@ The photos are Unsplash placeholders. Swap them for NVA's own photos before laun
 
 If a photo ever fails to load, the frame shows a branded CMYK panel instead of a broken image.
 
-### Replace the logo
+### Logo
 
-`src/components/Logo.astro` is a vector recreation of the logo (ink drop + NVA + PRINTING SERVICES). The favicon, app icon and share image use the same ink-drop mark from `src/lib/mark.ts`. To use the official artwork, add it to `src/assets/` and render it in `Logo.astro` with `<Image>` from `astro:assets`.
+The official logo lives in `src/assets/logo-transparent.png` (trimmed, white background removed) and is rendered by `src/components/Logo.astro` in the header, footer (on a white chip), hero and share image. To update it, replace that file with a same-style PNG. The favicon and app icon redraw the logo's stacked ink drop in `src/lib/mark.ts`.
 
 ## Launch switches (`src/config/site.ts`)
 

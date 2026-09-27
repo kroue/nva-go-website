@@ -12,7 +12,7 @@ const year = new Date().getFullYear();
   <div class="bg-cmy h-1.5"></div>
   <div class="container-x grid gap-12 py-14 lg:grid-cols-[1.3fr_2fr] lg:gap-16">
     <div class="space-y-6">
-      <Logo tone="paper" id="logo-footer" />
+      <Logo tone="paper" />
       <p class="max-w-sm text-on-ink-muted">
         Tarpaulins, signage, custom merch and corporate giveaways, printed in Cagayan de Oro.
       </p>
@@ -83,6 +83,9 @@ const year = new Date().getFullYear();
         <OpenStatus tone="paper" />
         <a href={site.social.facebook} class="inline-flex items-center gap-1.5 hover:text-paper" rel="noopener">
           <Icon name="facebook" class="size-4" /> Facebook
+        </a>
+        <a href={site.social.google} class="inline-flex items-center gap-1.5 hover:text-paper" rel="noopener">
+          <Icon name="pin" class="size-4" /> Google
         </a>
         <span>© {year} {site.name}</span>
       </div>

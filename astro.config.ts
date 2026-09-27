@@ -6,10 +6,13 @@ import { SITE_URL } from './src/config/site';
 
 const fs = (file: string) => `./node_modules/${file}`;
 
+// In `astro dev`, 'always' also applies to the dev image endpoint (/_image) and breaks local images.
+const isDev = process.argv.includes('dev');
+
 export default defineConfig({
   site: SITE_URL,
   output: 'static',
-  trailingSlash: 'always',
+  trailingSlash: isDev ? 'ignore' : 'always',
   adapter: vercel({
     // Remote and local photos are resized and served as AVIF/WebP by Vercel's image CDN.
     imageService: true,

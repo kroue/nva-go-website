@@ -29,7 +29,7 @@ const isCurrent = (href: string) => path === href || (href !== '/' && path.start
 <header class="sticky top-0 z-40 border-b border-line bg-paper/95 backdrop-blur supports-[backdrop-filter]:bg-paper/85">
   <div class="container-x flex h-16 items-center justify-between gap-4">
     <a href="/" class="-m-1 rounded-card p-1" aria-label={`${site.name} home`}>
-      <Logo size="sm" id="logo-header" />
+      <Logo size="sm" eager />
     </a>
 
     <nav aria-label="Main" class="hidden lg:block">

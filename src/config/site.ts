@@ -94,6 +94,9 @@ export const site = {
   social: {
     facebook: 'https://www.facebook.com/nvaprintingservices',
     messenger: 'https://m.me/nvaprintingservices',
+    // Google Business Profile share link (reviews, photos, map listing).
+    // TODO-confirm: if possible, replace with the full Google Maps listing URL (Maps → Share → Copy link).
+    google: 'https://share.google/yn75NLr4ASnfAbDYi',
   },
 
   stores: {

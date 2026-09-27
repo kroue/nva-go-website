@@ -40,7 +40,7 @@ export const localBusiness = () => ({
     { '@type': 'City', name: 'Cagayan de Oro City' },
     { '@type': 'AdministrativeArea', name: 'Northern Mindanao' },
   ],
-  sameAs: [site.social.facebook, site.stores.shopee, site.stores.lazada],
+  sameAs: [site.social.facebook, site.social.google, site.stores.shopee, site.stores.lazada],
   contactPoint: [
     {
       '@type': 'ContactPoint',
