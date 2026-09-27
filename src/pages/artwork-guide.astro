@@ -1,0 +1,290 @@
+---
+import Base from '../layouts/Base.astro';
+import { SITE_URL, site } from '../config/site';
+import { absoluteUrl, BUSINESS_ID } from '../lib/schema';
+import PageHero from '../components/PageHero.astro';
+import Icon from '../components/Icon.astro';
+import InkDrop from '../components/InkDrop.astro';
+import DropList from '../components/DropList.astro';
+import CtaBand from '../components/CtaBand.astro';
+
+const crumbs = [{ name: 'Artwork Guide', path: '/artwork-guide/' }];
+
+// Common tarpaulin sizes. Pixel sizes are at 72 ppi, the minimum for prints viewed from a few meters away.
+const tarpSizes = [
+  { w: 2, h: 3, use: 'Greetings, small notices, counter signs' },
+  { w: 3, h: 4, use: 'Birthday tarps, door signs, menus on the wall' },
+  { w: 3, h: 5, use: 'Birthday and christening tarps, promos' },
+  { w: 4, h: 6, use: 'Store fronts, sari-sari store signs, event welcome tarps' },
+  { w: 4, h: 8, use: 'Shop signage, campaign tarps' },
+  { w: 5, h: 10, use: 'Event backdrops, photo walls' },
+  { w: 8, h: 12, use: 'Stage backdrops, building banners' },
+];
+const px = (ft: number) => (ft * 12 * 72).toLocaleString('en-PH');
+
+const toc = [
+  { id: 'checklist', label: 'Quick checklist' },
+  { id: 'tarpaulin-sizes', label: 'Tarpaulin size guide' },
+  { id: 'resolution', label: 'Resolution' },
+  { id: 'cmyk-rgb', label: 'CMYK vs RGB' },
+  { id: 'bleed', label: 'Bleed & safe area' },
+  { id: 'formats', label: 'File formats' },
+  { id: 'mistakes', label: 'Common mistakes' },
+];
+
+const article = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: 'Artwork guide: how to prepare your file for printing',
+  description:
+    'Tarpaulin size guide, recommended resolution, CMYK vs RGB, bleed and accepted file formats, explained plainly for non-designers.',
+  mainEntityOfPage: absoluteUrl('/artwork-guide/'),
+  image: new URL('/og.png', SITE_URL).href,
+  author: { '@id': BUSINESS_ID },
+  publisher: { '@id': BUSINESS_ID },
+  inLanguage: 'en-PH',
+};
+---
+
+<Base
+  title="Tarpaulin Size Guide & How to Prepare Files for Printing"
+  description="Tarpaulin size guide in feet, recommended resolution for tarps vs small prints, CMYK vs RGB, bleed and accepted file formats. Plain-language tips from a Cagayan de Oro print shop."
+  crumbs={crumbs}
+  jsonLd={[article]}
+>
+  <PageHero crumbs={crumbs} label="Artwork guide" title="How to prepare your file for printing." accent="magenta">
+    No design degree needed. Follow this guide and your print will come out sharp, with the colors you expect, and nothing important cut
+    off. Stuck? Send what you have. We’ll check it before anything is printed.
+  </PageHero>
+
+  <div class="container-x grid gap-12 py-12 sm:py-16 lg:grid-cols-[15rem_1fr] lg:gap-16">
+    <nav aria-label="On this page" class="lg:sticky lg:top-24 lg:self-start">
+      <p class="label mb-3 text-magenta-ink">On this page</p>
+      <ol class="grid gap-1 sm:grid-cols-2 lg:grid-cols-1">
+        {
+          toc.map((t, i) => (
+            <li>
+              <a href={`#${t.id}`} class="flex min-h-10 items-center gap-3 rounded-card px-2 font-semibold hover:bg-offwhite">
+                <span class="font-display w-5 text-grey">{i + 1}</span>
+                {t.label}
+              </a>
+            </li>
+          ))
+        }
+      </ol>
+    </nav>
+
+    <article class="guide min-w-0 max-w-3xl space-y-16">
+      <section id="checklist" aria-labelledby="checklist-h">
+        <h2 id="checklist-h" class="h2">Quick checklist</h2>
+        <div class="crop-marks mt-6 rounded-card bg-yellow-tint p-6">
+          <DropList
+            accent="ink"
+            class="space-y-3 text-[1.0625rem]"
+            items={[
+              'Make the file at the actual print size (feet for tarps, inches or mm for small prints).',
+              'Use images that look sharp when zoomed to 100%.',
+              'Extend backgrounds past the edge (bleed) and keep text away from it.',
+              'Send a PDF if you can. PNG or high-quality JPG also works.',
+              'Double-check spelling, phone numbers and dates. We print exactly what you send.',
+            ]}
+          />
+        </div>
+      </section>
+
+      <section id="tarpaulin-sizes" aria-labelledby="tarp-h">
+        <h2 id="tarp-h" class="h2">Tarpaulin size guide</h2>
+        <p class="mt-4">
+          Tarpaulins are measured in <strong>feet, width × height</strong>. A 3×5 tarp is 3 feet wide and 5 feet tall (portrait). Area in
+          square feet is simply width times height. Here are the sizes we print most, with the minimum image size in pixels so your tarp
+          stays sharp.
+        </p>
+        <div class="mt-6 overflow-x-auto rounded-card border border-line">
+          <table class="w-full min-w-[34rem] text-left text-[0.95rem]">
+            <caption class="sr-only">Common tarpaulin sizes, area and minimum pixel dimensions</caption>
+            <thead class="bg-ink text-paper">
+              <tr>
+                <th scope="col" class="px-4 py-3 font-bold">Size (ft)</th>
+                <th scope="col" class="px-4 py-3 font-bold">Area</th>
+                <th scope="col" class="px-4 py-3 font-bold">Min. pixels (72 ppi)</th>
+                <th scope="col" class="px-4 py-3 font-bold">Good for</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-line">
+              {
+                tarpSizes.map((t) => (
+                  <tr class="even:bg-offwhite">
+                    <th scope="row" class="px-4 py-3 font-bold whitespace-nowrap">
+                      {t.w} × {t.h}
+                    </th>
+                    <td class="px-4 py-3 whitespace-nowrap">{t.w * t.h} sq ft</td>
+                    <td class="px-4 py-3 whitespace-nowrap">
+                      {px(t.w)} × {px(t.h)} px
+                    </td>
+                    <td class="px-4 py-3 text-grey">{t.use}</td>
+                  </tr>
+                ))
+              }
+            </tbody>
+          </table>
+        </div>
+        <p class="mt-4 text-[0.95rem] text-grey">
+          Need a size that’s not listed? Any size works. Enter it on the <a href="/quote/?product=tarpaulin" class="link text-ink">quote form</a> and
+          it works out the square feet for you.
+        </p>
+      </section>
+
+      <section id="resolution" aria-labelledby="res-h">
+        <h2 id="res-h" class="h2">Resolution: how sharp is sharp enough?</h2>
+        <p class="mt-4">
+          Resolution is how many pixels fit in one inch of the print (ppi). Things you hold in your hand need more detail than things you
+          look at from across the street.
+        </p>
+        <div class="mt-6 grid gap-4 sm:grid-cols-3">
+          <div class="card p-5">
+            <p class="font-display text-3xl">300<span class="text-lg"> ppi</span></p>
+            <p class="mt-1 font-bold">Small print</p>
+            <p class="mt-1 text-[0.95rem] text-grey">Calling cards, flyers, stickers, labels, menus.</p>
+          </div>
+          <div class="card p-5">
+            <p class="font-display text-3xl">100–150<span class="text-lg"> ppi</span></p>
+            <p class="mt-1 font-bold">Viewed up close</p>
+            <p class="mt-1 text-[0.95rem] text-grey">Roll-up banners, standees, X-banners, photo walls.</p>
+          </div>
+          <div class="card p-5">
+            <p class="font-display text-3xl">72–100<span class="text-lg"> ppi</span></p>
+            <p class="mt-1 font-bold">Viewed from afar</p>
+            <p class="mt-1 text-[0.95rem] text-grey">Tarpaulins, store signage, building banners.</p>
+          </div>
+        </div>
+        <p class="mt-6">
+          <strong>Quick test:</strong> zoom your design to 100%. If it looks blurry or blocky on screen, it will look blurry in print. Logos
+          saved from Facebook or Google are usually too small. Ask for the original file, or let us redraw it.
+        </p>
+      </section>
+
+      <section id="cmyk-rgb" aria-labelledby="cmyk-h">
+        <h2 id="cmyk-h" class="h2">CMYK vs RGB</h2>
+        <div class="mt-6 grid gap-4 sm:grid-cols-2">
+          <div class="rounded-card border border-line p-5">
+            <p class="flex items-center gap-2 font-bold">
+              <span class="flex" aria-hidden="true">
+                <span class="size-5 rounded-full bg-[#ff0000] mix-blend-multiply"></span>
+                <span class="-ml-2 size-5 rounded-full bg-[#00c800] mix-blend-multiply"></span>
+                <span class="-ml-2 size-5 rounded-full bg-[#0050ff] mix-blend-multiply"></span>
+              </span>
+              RGB is for screens
+            </p>
+            <p class="mt-2 text-[0.95rem] text-grey">Phones, monitors and TVs mix red, green and blue light. It can show very bright, glowing colors.</p>
+          </div>
+          <div class="rounded-card border border-line p-5">
+            <p class="flex items-center gap-2 font-bold">
+              <span class="flex" aria-hidden="true">
+                <InkDrop fill="cyan" class="h-5 w-auto" /><InkDrop fill="magenta" class="-ml-1 h-5 w-auto" /><InkDrop
+                  fill="yellow"
+                  class="-ml-1 h-5 w-auto"
+                /><InkDrop fill="ink" class="-ml-1 h-5 w-auto" />
+              </span>
+              CMYK is for print
+            </p>
+            <p class="mt-2 text-[0.95rem] text-grey">Printers mix cyan, magenta, yellow and black ink on paper, vinyl or fabric.</p>
+          </div>
+        </div>
+        <p class="mt-6">
+          Some screen colors, like neon green, electric blue and bright orange, can’t be made with ink, so they print a little duller. If
+          your software lets you, set the document to <strong>CMYK</strong> before you design. If not, send it as is and we’ll convert
+          it. For color-critical jobs like brand colors, ask us for a printed proof first.
+        </p>
+      </section>
+
+      <section id="bleed" aria-labelledby="bleed-h">
+        <h2 id="bleed-h" class="h2">Bleed & safe area</h2>
+        <div class="mt-6 grid items-center gap-8 sm:grid-cols-[1fr_1.1fr]">
+          <figure>
+            <svg viewBox="0 0 260 180" class="h-auto w-full" role="img" aria-labelledby="bleed-fig">
+              <title id="bleed-fig">Diagram of bleed, trim line and safe area on a print</title>
+              <rect x="10" y="10" width="240" height="160" fill="#FDE6F3" />
+              <rect x="30" y="30" width="200" height="120" fill="#fff" stroke="#141414" stroke-width="1.5" />
+              <rect x="50" y="50" width="160" height="80" fill="none" stroke="#00739E" stroke-width="1.5" stroke-dasharray="5 4" />
+              <g stroke="#141414" stroke-width="1">
+                <path d="M30 2v14M2 30h14M230 2v14M244 30h14M30 164v14M2 150h14M230 164v14M244 150h14" />
+              </g>
+              <g font-family="sans-serif" font-size="10" font-weight="700">
+                <text x="130" y="24" text-anchor="middle" fill="#C4006F">BLEED</text>
+                <text x="130" y="44" text-anchor="middle" fill="#141414">TRIM LINE</text>
+                <text x="130" y="94" text-anchor="middle" fill="#00739E">SAFE AREA</text>
+              </g>
+            </svg>
+            <figcaption class="mt-2 text-sm text-grey">Crop marks show where the print is cut.</figcaption>
+          </figure>
+          <DropList
+            accent="magenta"
+            class="space-y-3"
+            items={[
+              'Bleed: stretch background colors and photos about 3 mm (1/8 inch) past the edge of small prints, so no white line shows after cutting.',
+              'Trim line: where the print is cut. Cutting can shift a hair, which is why bleed exists.',
+              'Safe area: keep text and logos at least 5 mm inside the trim on small prints, and at least 2 inches from the edge on tarpaulins, where eyelets go.',
+            ]}
+          />
+        </div>
+      </section>
+
+      <section id="formats" aria-labelledby="formats-h">
+        <h2 id="formats-h" class="h2">Accepted file formats</h2>
+        <div class="mt-6 overflow-hidden rounded-card border border-line">
+          <dl class="divide-y divide-line">
+            {
+              [
+                ['PDF', 'Best choice for almost everything. Export as “High Quality Print” or “PDF/X” with fonts embedded.'],
+                ['AI', 'Adobe Illustrator. Convert text to outlines and include linked images.'],
+                ['PSD', 'Photoshop. Set to the final size and resolution. Flattened is safest.'],
+                ['PNG', 'Good for designs from Canva or phone apps. Download at the largest size available.'],
+                ['JPG', 'Fine for photos. Save at the highest quality setting.'],
+              ].map(([fmt, text]) => (
+                <div class="grid gap-1 p-4 sm:grid-cols-[5rem_1fr] sm:gap-4">
+                  <dt class="font-display text-lg">{fmt}</dt>
+                  <dd class="text-grey">{text}</dd>
+                </div>
+              ))
+            }
+          </dl>
+        </div>
+        <p class="mt-4 text-[0.95rem] text-grey">
+          Files up to 25 MB can be uploaded on the quote form. Bigger than that? Send a Google Drive link on
+          <a href={site.social.messenger} class="link text-ink" rel="noopener">Messenger</a> or email it to
+          <a href={`mailto:${site.email}`} class="link break-all text-ink">{site.email}</a>.
+        </p>
+      </section>
+
+      <section id="mistakes" aria-labelledby="mistakes-h">
+        <h2 id="mistakes-h" class="h2">Common mistakes we fix every week</h2>
+        <ul class="mt-6 grid gap-4 sm:grid-cols-2">
+          {
+            [
+              ['Text too close to the edge', 'It gets cut off or covered by eyelets. Keep it inside the safe area.'],
+              ['Tiny logo from the internet', 'Looks fine on a phone, blurry on a 4×6 tarp. Send the original file.'],
+              ['Thin white text on a busy photo', 'Hard to read from a distance. Use bold text on a solid or darkened area.'],
+              ['Wrong proportions', 'A square design on a 3×5 tarp gets stretched or leaves empty space. Start at the right size.'],
+            ].map(([title, text]) => (
+              <li class="card p-5">
+                <p class="flex items-center gap-2 font-bold">
+                  <Icon name="close" class="size-4 text-magenta-ink" />
+                  {title}
+                </p>
+                <p class="mt-1 text-[0.95rem] text-grey">{text}</p>
+              </li>
+            ))
+          }
+        </ul>
+      </section>
+
+      <section class="crop-marks rounded-card bg-cyan-tint p-6 sm:p-8" aria-labelledby="help-h">
+        <h2 id="help-h" class="h3">Rather not deal with any of this?</h2>
+        <p class="mt-2">Our layout artist can design it for you. Just send your idea, text and photos.</p>
+        <a href="/quote/?design=need" class="btn btn-primary mt-5"><Icon name="palette" /> I need a design</a>
+      </section>
+    </article>
+  </div>
+
+  <CtaBand title="File ready? Let’s print it." />
+</Base>

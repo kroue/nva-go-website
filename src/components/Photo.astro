@@ -1,0 +1,75 @@
+---
+/**
+ * Photo frame used across the site.
+ * - Astro <Image> with explicit size + responsive widths (served as AVIF/WebP).
+ * - Lazy by default; pass priority for above-the-fold photos.
+ * - Behind the photo sits a branded halftone panel, which doubles as the
+ *   loading placeholder and as the fallback if a photo ever fails to load.
+ */
+import { Image } from 'astro:assets';
+import type { Photo as PhotoData } from '../data/images';
+import type { Accent } from '../data/products';
+import RegMark from './RegMark.astro';
+import InkDrop from './InkDrop.astro';
+
+interface Props {
+  photo: PhotoData;
+  /** CSS aspect ratio, e.g. '4 / 3' */
+  ratio?: string;
+  sizes?: string;
+  accent?: Accent;
+  label?: string;
+  priority?: boolean;
+  class?: string;
+  imgClass?: string;
+}
+
+const {
+  photo,
+  ratio = '4 / 3',
+  sizes = '(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw',
+  accent = 'cyan',
+  label,
+  priority = false,
+  class: className = '',
+  imgClass = '',
+} = Astro.props;
+
+const [rw, rh] = ratio.split('/').map((n) => Number(n.trim()));
+const width = 1200;
+const height = Math.round((width * rh) / rw);
+
+const panel: Record<Accent, string> = {
+  cyan: 'bg-cyan-tint text-cyan',
+  magenta: 'bg-magenta-tint text-magenta',
+  yellow: 'bg-yellow-tint text-[#e0b800]',
+  ink: 'bg-ink-soft text-[#4a4a4a]',
+};
+---
+
+<div class:list={['relative overflow-hidden', className]} style={`aspect-ratio:${ratio}`}>
+  <div class:list={['absolute inset-0 flex items-end p-4', panel[accent]]} aria-hidden="true">
+    <div class="halftone absolute inset-0 opacity-60"></div>
+    <RegMark class="absolute right-3 top-3 size-6 opacity-70" />
+    <InkDrop fill="current" class="absolute top-1/2 left-1/2 h-2/5 w-auto -translate-x-1/2 -translate-y-1/2 opacity-80" />
+    {
+      label && (
+        <span class:list={['label relative', accent === 'ink' ? 'text-paper' : 'text-ink']}>{label}</span>
+      )
+    }
+  </div>
+  <Image
+    src={photo.src as string /* remote URL or imported local image; both accept explicit width/height */}
+    alt={photo.alt}
+    width={width}
+    height={height}
+    widths={[480, 640, 828, 1080, 1200]}
+    sizes={sizes}
+    quality={70}
+    loading={priority ? 'eager' : 'lazy'}
+    fetchpriority={priority ? 'high' : 'auto'}
+    decoding="async"
+    class:list={['absolute inset-0 size-full object-cover', imgClass]}
+    onerror="this.remove()"
+  />
+</div>

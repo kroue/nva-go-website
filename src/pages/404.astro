@@ -1,0 +1,46 @@
+---
+import Base from '../layouts/Base.astro';
+import { site } from '../config/site';
+import Icon from '../components/Icon.astro';
+import RegMark from '../components/RegMark.astro';
+
+const links = [
+  { href: '/products/', label: 'Products & services' },
+  { href: '/quote/', label: 'Get a quote' },
+  { href: '/corporate-giveaways/', label: 'Corporate giveaways' },
+  { href: '/contact/', label: 'Contact & directions' },
+];
+---
+
+<Base title="Page Not Found" description="This page couldn’t be found." noindex>
+  <section class="relative overflow-hidden py-20 sm:py-28">
+    <div class="halftone halftone-fade pointer-events-none absolute inset-0 text-cyan opacity-20" aria-hidden="true"></div>
+    <div class="container-x relative max-w-3xl text-center">
+      <!-- Misregistered 404: the three process colors slightly off, like a badly aligned plate -->
+      <p class="font-display relative mx-auto w-fit text-[7rem] leading-none sm:text-[10rem]" aria-hidden="true">
+        <span class="absolute inset-0 translate-x-[-6px] translate-y-[-4px] text-cyan mix-blend-multiply">404</span>
+        <span class="absolute inset-0 translate-x-[5px] translate-y-[3px] text-magenta mix-blend-multiply">404</span>
+        <span class="absolute inset-0 translate-x-[2px] translate-y-[-5px] text-yellow mix-blend-multiply">404</span>
+        <span class="relative text-ink mix-blend-multiply">404</span>
+      </p>
+      <p class="label mt-6 inline-flex items-center gap-2 text-magenta-ink"><RegMark class="size-5 text-ink" /> Misprint</p>
+      <h1 class="h2 mt-2">This page didn’t make it to print.</h1>
+      <p class="mx-auto mt-4 max-w-lg text-lg text-grey">The link may be old or mistyped. Try one of these instead, or message us and we’ll help.</p>
+      <ul class="mx-auto mt-8 grid max-w-lg gap-3 sm:grid-cols-2">
+        {
+          links.map((l) => (
+            <li>
+              <a href={l.href} class="btn btn-outline w-full">
+                {l.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+      <div class="mt-6 flex flex-col justify-center gap-3 xs:flex-row">
+        <a href="/" class="btn btn-primary"><Icon name="arrow" /> Back to home</a>
+        <a href={site.social.messenger} class="btn btn-messenger" rel="noopener"><Icon name="messenger" /> Message us</a>
+      </div>
+    </div>
+  </section>
+</Base>

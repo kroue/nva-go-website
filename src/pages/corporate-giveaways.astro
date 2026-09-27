@@ -1,0 +1,129 @@
+---
+import Base from '../layouts/Base.astro';
+import { bundles } from '../data/bundles';
+import { findProduct } from '../data/products';
+import { localBusiness } from '../lib/schema';
+import { accentFill, accentText } from '../lib/accent';
+import PageHero from '../components/PageHero.astro';
+import Photo from '../components/Photo.astro';
+import Icon from '../components/Icon.astro';
+import DropList from '../components/DropList.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import QuoteForm from '../components/QuoteForm.astro';
+import ReviewQuote from '../components/ReviewQuote.astro';
+
+const crumbs = [{ name: 'Corporate Giveaways', path: '/corporate-giveaways/' }];
+
+const reasons = [
+  { title: 'One supplier, whole event', text: 'Tarps, IDs, shirts and tokens in one order, one invoice and one pick-up.', icon: 'briefcase' },
+  { title: 'Branded consistently', text: 'Your logo and colors matched across paper, fabric, ceramic and plastic.', icon: 'palette' },
+  { title: 'Built around your deadline', text: 'Tell us the event date. We plan production backwards from it, rush jobs included.', icon: 'clock' },
+  { title: 'Fits your budget', text: 'Share a budget range and we suggest the mix of items that gives you the most impact.', icon: 'gift' },
+] as const;
+---
+
+<Base
+  title="Corporate Giveaways & Bulk Orders in Cagayan de Oro"
+  description="Corporate giveaways and event kits in Cagayan de Oro: branded shirts, mugs, tumblers, lanyards and IDs, umbrellas and souvenirs for companies, schools and events. Send a bulk inquiry."
+  crumbs={crumbs}
+  jsonLd={[localBusiness()]}
+>
+  <PageHero crumbs={crumbs} label="For companies, schools & event organizers" title="Corporate giveaways, branded on everything." accent="magenta">
+    Anniversaries, seminars, sportsfests, conventions and graduations. Tell us the event, headcount and deadline, and we’ll put together
+    a kit that looks like your brand from registration to raffle.
+    <Fragment slot="actions">
+      <a href="#inquiry" class="btn btn-accent"><Icon name="gift" /> Send a bulk inquiry</a>
+      <a href="#kits" class="btn btn-outline">See kit ideas</a>
+    </Fragment>
+  </PageHero>
+
+  <section class="py-14 sm:py-20" aria-labelledby="why-title">
+    <div class="container-x">
+      <h2 id="why-title" class="sr-only">Why order giveaways from NVA</h2>
+      <ul class="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        {
+          reasons.map((r) => (
+            <li class="card p-6">
+              <span class="grid size-11 place-items-center rounded-full bg-magenta-tint text-magenta-ink">
+                <Icon name={r.icon} class="size-5" />
+              </span>
+              <h3 class="h3 mt-4">{r.title}</h3>
+              <p class="mt-2 text-grey">{r.text}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section id="kits" class="scroll-mt-24 bg-offwhite py-14 sm:py-20" aria-labelledby="kits-title">
+    <div class="container-x">
+      <SectionHeading id="kits-title" label="Kit ideas" title="Start from a kit, then make it yours." accent="magenta">
+        These are starting points, not fixed packages. Swap items, change quantities, add a backdrop. Every kit is quoted to your headcount
+        and budget.
+      </SectionHeading>
+
+      <ul class="mt-12 grid gap-8 lg:grid-cols-3">
+        {
+          bundles.map((b) => (
+            <li class="card flex flex-col overflow-hidden">
+              <div class:list={['h-1.5', accentFill[b.accent]]} />
+              <Photo photo={b.photo} ratio="3 / 2" accent={b.accent} label={b.name} sizes="(min-width: 1024px) 33vw, 100vw" />
+              <div class="flex flex-1 flex-col p-6">
+                <p class:list={['label', accentText[b.accent]]}>{b.forWho}</p>
+                <h3 class="h3 mt-2">{b.name}</h3>
+                <p class="mt-3 text-grey">{b.description}</p>
+                <p class="mt-5 text-sm font-bold">Usually includes</p>
+                <DropList
+                  class="mt-2 grid grid-cols-2 gap-x-3 gap-y-1.5 text-[0.95rem]"
+                  accent={b.accent}
+                  items={b.items.map((slug) => findProduct(slug)?.name ?? slug)}
+                />
+                <a href={`?kit=${b.id}#inquiry`} class="btn btn-outline mt-6 w-full" data-kit-link={b.id}>
+                  Ask about this kit
+                </a>
+              </div>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section id="inquiry" class="scroll-mt-24 py-14 sm:py-20" aria-labelledby="inquiry-title">
+    <div class="container-x grid gap-12 lg:grid-cols-[1fr_1.5fr] lg:gap-16">
+      <div class="lg:sticky lg:top-28 lg:self-start">
+        <SectionHeading id="inquiry-title" label="Bulk inquiry" title="Tell us about your event." accent="magenta">
+          Quantity, deadline and budget are enough to get started. We’ll reply with item suggestions, mock-ups on request and a formal
+          quotation for your purchasing team.
+        </SectionHeading>
+        <DropList
+          class="mt-6 space-y-2.5"
+          accent="magenta"
+          items={['Formal quotation for your purchasing team', 'Layout help and logo clean-up', 'Pick-up in Divisoria or delivery around CDO']}
+        />
+        <div class="crop-marks mt-10 rounded-card bg-magenta-tint p-6">
+          <ReviewQuote />
+        </div>
+      </div>
+      <div class="card p-5 sm:p-8">
+        <QuoteForm variant="bulk" headingId="inquiry-title" />
+      </div>
+    </div>
+  </section>
+</Base>
+
+<script>
+  // Kit buttons: pre-select the kit in the form without reloading the page.
+  document.querySelectorAll<HTMLAnchorElement>('[data-kit-link]').forEach((a) =>
+    a.addEventListener('click', (e) => {
+      const select = document.querySelector<HTMLSelectElement>('#inquiry [data-product-select]');
+      if (!select) return;
+      e.preventDefault();
+      select.value = `kit:${a.dataset.kitLink}`;
+      history.replaceState(null, '', `?kit=${a.dataset.kitLink}#inquiry`);
+      document.getElementById('inquiry')?.scrollIntoView();
+      select.focus({ preventScroll: true });
+    }),
+  );
+</script>

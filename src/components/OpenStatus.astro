@@ -1,0 +1,50 @@
+---
+/**
+ * "Open now / Closed" pill computed in Asia/Manila time in the browser.
+ * Server-rendered text is the regular hours, so it still reads well without JS.
+ */
+import { site } from '../config/site';
+
+interface Props {
+  class?: string;
+  tone?: 'ink' | 'paper';
+}
+const { class: className = '', tone = 'ink' } = Astro.props;
+---
+
+<span
+  class:list={['open-status inline-flex items-center gap-2 whitespace-nowrap', className]}
+  data-open-status
+  data-tone={tone}
+>
+  <span class="dot relative inline-block size-2.5 shrink-0 rounded-full" aria-hidden="true"></span>
+  <span data-text>{site.hoursShort}</span>
+</span>
+
+<style>
+  .dot {
+    background: #9a9a9a;
+  }
+  [data-state='open'] .dot {
+    background: var(--color-cyan);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-cyan) 30%, transparent);
+  }
+  [data-state='closed'] .dot {
+    background: var(--color-magenta);
+  }
+</style>
+
+<script>
+  import { getOpenStatus } from '../lib/hours';
+
+  const update = () => {
+    const status = getOpenStatus();
+    document.querySelectorAll<HTMLElement>('[data-open-status]').forEach((el) => {
+      el.dataset.state = status.open ? 'open' : 'closed';
+      const text = el.querySelector('[data-text]');
+      if (text) text.textContent = status.text;
+    });
+  };
+  update();
+  setInterval(update, 60_000);
+</script>

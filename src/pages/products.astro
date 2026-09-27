@@ -1,0 +1,90 @@
+---
+import Base from '../layouts/Base.astro';
+import { categories, quoteHref } from '../data/products';
+import { services } from '../lib/schema';
+import { accentFill, accentText, accentTint } from '../lib/accent';
+import PageHero from '../components/PageHero.astro';
+import Photo from '../components/Photo.astro';
+import Icon from '../components/Icon.astro';
+import InkDrop from '../components/InkDrop.astro';
+import CtaBand from '../components/CtaBand.astro';
+
+const crumbs = [{ name: 'Products & Services', path: '/products/' }];
+---
+
+<Base
+  title="Tarpaulin, Sublimation & Merch Printing in CDO"
+  description="Printing services in Cagayan de Oro: tarpaulin printing, signage, sublimation printing for shirts and jerseys, custom mugs, lanyard printing and giveaways. Get a free quote for any item."
+  crumbs={crumbs}
+  jsonLd={services()}
+>
+  <PageHero crumbs={crumbs} label="Products & services" title="Everything we print, in one place." accent="cyan">
+    Tarpaulins to tumblers, calling cards to jerseys. Every item is quoted to your size, quantity and deadline, so tap
+    <strong class="text-ink">Get a quote</strong> on anything and we’ll reply with the details.
+  </PageHero>
+
+  <!-- Jump links -->
+  <nav aria-label="Product categories" class="sticky top-16 z-30 border-b border-line bg-paper/95 backdrop-blur">
+    <ul class="container-x flex gap-2 overflow-x-auto py-3 [scrollbar-width:none]">
+      {
+        categories.map((c) => (
+          <li class="shrink-0">
+            <a href={`#${c.id}`} class="inline-flex min-h-10 items-center gap-2 rounded-full border-2 border-line px-4 text-sm font-bold whitespace-nowrap hover:border-ink">
+              <InkDrop fill={c.accent} class="h-3.5 w-auto" />
+              {c.name}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </nav>
+
+  {
+    categories.map((c, i) => (
+      <section id={c.id} class:list={['scroll-mt-32 py-14 sm:py-20', i % 2 === 1 && 'bg-offwhite']} aria-labelledby={`${c.id}-title`}>
+        <div class="container-x">
+          <div class="grid items-center gap-8 lg:grid-cols-[1.1fr_1fr] lg:gap-14">
+            <div>
+              <div class:list={['mb-5 h-1.5 w-16', accentFill[c.accent]]} />
+              <h2 id={`${c.id}-title`} class="h2">{c.name}</h2>
+              <p class="mt-4 max-w-xl text-lg text-grey">{c.intro}</p>
+            </div>
+            <div class="crop-marks">
+              <Photo photo={c.photo} ratio="16 / 9" accent={c.accent} label={c.name} sizes="(min-width: 1024px) 45vw, 100vw" />
+            </div>
+          </div>
+
+          <ul class="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {c.items.map((item) => (
+              <li id={item.slug} class="card flex scroll-mt-32 flex-col p-6">
+                <div class="flex items-start gap-3">
+                  <span class:list={['mt-1 grid size-9 shrink-0 place-items-center rounded-full', accentTint[c.accent]]}>
+                    <InkDrop fill={c.accent} class="h-4 w-auto" />
+                  </span>
+                  <h3 class="h3">{item.name}</h3>
+                </div>
+                <p class="mt-3 flex-1 text-grey">{item.description}</p>
+                <a href={quoteHref(item.slug)} class:list={['mt-5 inline-flex min-h-11 w-fit items-center gap-2 font-bold hover:underline', accentText[c.accent]]}>
+                  Get a quote <span class="sr-only">for {item.name}</span>
+                  <Icon name="arrow" class="size-4" />
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+    ))
+  }
+
+  <section class="border-t border-line py-14">
+    <div class="container-x flex flex-col items-start justify-between gap-6 md:flex-row md:items-center">
+      <div>
+        <h2 class="h3">Don’t see what you need?</h2>
+        <p class="mt-2 text-grey">We print on a lot more than what’s listed. Ask us, and if we can’t do it we’ll say so.</p>
+      </div>
+      <a href={quoteHref('other')} class="btn btn-primary shrink-0"><Icon name="quote" /> Ask about something else</a>
+    </div>
+  </section>
+
+  <CtaBand />
+</Base>

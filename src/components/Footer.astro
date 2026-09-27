@@ -1,0 +1,91 @@
+---
+import { footerNav, fullAddress, site } from '../config/site';
+import Logo from './Logo.astro';
+import Icon from './Icon.astro';
+import ColorBar from './ColorBar.astro';
+import OpenStatus from './OpenStatus.astro';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="on-ink relative overflow-hidden bg-ink text-paper">
+  <div class="bg-cmy h-1.5"></div>
+  <div class="container-x grid gap-12 py-14 lg:grid-cols-[1.3fr_2fr] lg:gap-16">
+    <div class="space-y-6">
+      <Logo tone="paper" id="logo-footer" />
+      <p class="max-w-sm text-on-ink-muted">
+        Tarpaulins, signage, custom merch and corporate giveaways, printed in Cagayan de Oro.
+      </p>
+      <address class="space-y-3 not-italic">
+        <a href={site.mapsUrl} class="flex gap-3 hover:text-yellow" rel="noopener">
+          <Icon name="pin" class="mt-1 size-5 shrink-0 text-cyan" />
+          <span>{fullAddress}</span>
+        </a>
+        <a href={`tel:${site.phone.mobile.tel}`} class="flex items-center gap-3 hover:text-yellow">
+          <Icon name="phone" class="size-5 shrink-0 text-cyan" />
+          <span>{site.phone.mobile.label}</span>
+        </a>
+        <p class="flex items-start gap-3 text-on-ink-muted">
+          <Icon name="phone" class="mt-1 size-5 shrink-0 text-cyan" />
+          <span>
+            {
+              site.phone.landlines.map((l, i) => (
+                <>
+                  {i > 0 && ' · '}
+                  <a href={`tel:${l.tel}`} class="hover:text-yellow">
+                    {l.label}
+                  </a>
+                </>
+              ))
+            }
+          </span>
+        </p>
+        <a href={`mailto:${site.email}`} class="flex items-center gap-3 break-all hover:text-yellow">
+          <Icon name="mail" class="size-5 shrink-0 text-cyan" />
+          <span>{site.email}</span>
+        </a>
+        <p class="flex items-start gap-3">
+          <Icon name="clock" class="mt-1 size-5 shrink-0 text-cyan" />
+          <span>
+            {site.hoursLabel}.<br /><span class="text-on-ink-muted">{site.closedLabel}.</span>
+          </span>
+        </p>
+      </address>
+    </div>
+
+    <div class="grid gap-10 sm:grid-cols-3">
+      {
+        footerNav.map((col) => (
+          <nav aria-label={col.title}>
+            <h2 class="label-lg mb-4 text-yellow uppercase">{col.title}</h2>
+            <ul class="space-y-2.5">
+              {col.links.map((l) => (
+                <li>
+                  <a href={l.href} class="text-on-ink-muted hover:text-paper hover:underline">
+                    {l.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        ))
+      }
+    </div>
+  </div>
+
+  <div class="border-t border-white/10">
+    <div class="container-x flex flex-col gap-4 py-6 text-sm text-on-ink-muted sm:flex-row sm:items-center sm:justify-between">
+      <p class="flex items-center gap-3">
+        <ColorBar class="h-2.5 w-14" />
+        <span class="font-label text-base font-bold tracking-wide text-paper">Salamat sa pagsalig!</span>
+      </p>
+      <div class="flex flex-wrap items-center gap-x-5 gap-y-2">
+        <OpenStatus tone="paper" />
+        <a href={site.social.facebook} class="inline-flex items-center gap-1.5 hover:text-paper" rel="noopener">
+          <Icon name="facebook" class="size-4" /> Facebook
+        </a>
+        <span>© {year} {site.name}</span>
+      </div>
+    </div>
+  </div>
+</footer>

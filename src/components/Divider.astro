@@ -1,0 +1,9 @@
+---
+/** Thin C→M→Y gradient rule between sections. */
+interface Props {
+  class?: string;
+}
+const { class: className = '' } = Astro.props;
+---
+
+<div class:list={['bg-cmy h-1 w-full', className]} role="presentation"></div>

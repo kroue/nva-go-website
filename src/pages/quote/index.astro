@@ -1,0 +1,59 @@
+---
+import Base from '../../layouts/Base.astro';
+import { site } from '../../config/site';
+import PageHero from '../../components/PageHero.astro';
+import QuoteForm from '../../components/QuoteForm.astro';
+import Icon from '../../components/Icon.astro';
+import DropList from '../../components/DropList.astro';
+import OpenStatus from '../../components/OpenStatus.astro';
+
+const crumbs = [{ name: 'Get a Quote', path: '/quote/' }];
+---
+
+<Base
+  title="Get a Free Printing Quote"
+  description="Free quote for tarpaulins, signage, shirts, mugs and lanyards from a Divisoria printing shop. Upload your artwork, set your deadline. Rush printing in Cagayan de Oro available."
+  crumbs={crumbs}
+>
+  <PageHero crumbs={crumbs} label="Free, no commitment" title="Get a quote." accent="cyan">
+    Tell us what you need, how many and when. Upload your file if you have one. We reply during shop hours with your price and release
+    date.
+  </PageHero>
+
+  <section class="py-12 sm:py-16" aria-labelledby="form-title">
+    <div class="container-x grid gap-12 lg:grid-cols-[1.6fr_1fr] lg:gap-14">
+      <div class="card p-5 sm:p-8">
+        <h2 id="form-title" class="sr-only">Quote request form</h2>
+        <QuoteForm variant="quote" headingId="form-title" />
+      </div>
+
+      <aside class="space-y-8 lg:sticky lg:top-24 lg:self-start" aria-label="Other ways to order">
+        <div class="crop-marks rounded-card bg-cyan-tint p-6">
+          <h2 class="h3">Faster on Messenger?</h2>
+          <p class="mt-2 text-grey">Send a photo of what you want and we’ll quote it in the chat.</p>
+          <a href={site.social.messenger} class="btn btn-messenger mt-5 w-full" rel="noopener"><Icon name="messenger" /> Message us</a>
+          <p class="mt-4 text-center text-sm">
+            or call <a href={`tel:${site.phone.mobile.tel}`} class="link">{site.phone.mobile.label}</a>
+          </p>
+        </div>
+        <div>
+          <h2 class="label mb-3 text-magenta-ink">Before you send</h2>
+          <DropList
+            accent="magenta"
+            items={[
+              'For tarpaulins, give the size in feet (width × height).',
+              'PDF is best. PNG or JPG is fine if it’s big and sharp.',
+              'No file yet? Choose “I need a design” and describe it in the notes.',
+            ]}
+          />
+          <a href="/artwork-guide/" class="link mt-4 inline-block">Read the artwork guide</a>
+        </div>
+        <div class="rounded-card border border-line p-5 text-[0.95rem]">
+          <p class="font-bold">Shop hours</p>
+          <p class="text-grey">{site.hoursLabel}. {site.closedLabel}.</p>
+          <p class="mt-2 font-semibold"><OpenStatus /></p>
+        </div>
+      </aside>
+    </div>
+  </section>
+</Base>

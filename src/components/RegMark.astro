@@ -1,0 +1,13 @@
+---
+/** Registration target, the crosshair printers use to line up plates. */
+interface Props {
+  class?: string;
+}
+const { class: className = 'size-6' } = Astro.props;
+---
+
+<svg class={className} viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true" focusable="false">
+  <circle cx="16" cy="16" r="9" />
+  <circle cx="16" cy="16" r="4.5" fill="currentColor" stroke="none" />
+  <path d="M16 1v30M1 16h30" />
+</svg>

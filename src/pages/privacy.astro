@@ -1,0 +1,135 @@
+---
+import Base from '../layouts/Base.astro';
+import { fullAddress, site } from '../config/site';
+import PageHero from '../components/PageHero.astro';
+
+const crumbs = [{ name: 'Privacy Policy', path: '/privacy/' }];
+// TODO-confirm: effective date and the name of NVA's Data Protection Officer.
+const updated = 'September 2026';
+---
+
+<Base
+  title="Privacy Policy"
+  description="How NVA Printing Services collects, uses and protects your personal information under the Philippine Data Privacy Act of 2012 (RA 10173)."
+  crumbs={crumbs}
+>
+  <PageHero crumbs={crumbs} label="Privacy policy" title="Your data, handled with care." accent="ink">
+    This policy explains what personal information we collect through this website and our shop, why we collect it, and your rights
+    under the Data Privacy Act of 2012 (Republic Act No. 10173). Last updated {updated}.
+  </PageHero>
+
+  <div class="container-x py-12 sm:py-16">
+    <article class="prose-nva max-w-3xl">
+      <h2>1. Who we are</h2>
+      <p>
+        {site.name} (“NVA”, “we”, “us”) is a printing shop at {fullAddress}. We are the personal information controller for the
+        information described here.
+      </p>
+
+      <h2>2. What we collect</h2>
+      <ul>
+        <li><strong>Contact details</strong>: your name, mobile number, email address and, for bulk inquiries, your company, school or organization.</li>
+        <li><strong>Order details</strong>: products, quantities, sizes, deadlines, budget range and notes you give us.</li>
+        <li><strong>Files</strong>: artwork, logos and photos you upload or send. These may contain personal information such as names or faces.</li>
+        <li><strong>Messages</strong>: what you send us on Messenger, SMS, email or phone.</li>
+        <li><strong>Technical data</strong>: our hosting provider keeps basic server logs (such as IP address and browser type) to keep the website secure and running.</li>
+      </ul>
+      <p>We do not use advertising or tracking cookies on this website.</p>
+
+      <h2>3. Why we use it</h2>
+      <ul>
+        <li>To reply to your quote request or inquiry and prepare your quotation.</li>
+        <li>To design, print, finish and release or deliver your order.</li>
+        <li>To contact you about your order, payment, pick-up or delivery.</li>
+        <li>To keep records required by law, such as tax and accounting records.</li>
+        <li>To review job applications sent to our HR email.</li>
+      </ul>
+      <p>
+        We process your information based on your consent, to fulfill our agreement with you, and to comply with legal obligations, as
+        allowed under Section 12 of the Data Privacy Act. We will not use your information for marketing without asking you first.
+      </p>
+
+      <h2>4. Who we share it with</h2>
+      <p>We never sell your personal information. We only share it when needed to serve you:</p>
+      <ul>
+        <li>Service providers that run this website and deliver form emails to us (web hosting and email delivery).</li>
+        <li>Our order-tracking system, if you place or track an order online.</li>
+        <li>Couriers or delivery riders, only the details needed to deliver your order.</li>
+        <li>Government authorities, when required by law.</li>
+      </ul>
+      <p>Some of these providers may store data outside the Philippines. We use reputable providers that protect data with appropriate safeguards.</p>
+
+      <h2>5. How long we keep it</h2>
+      <p>
+        Quote requests that don’t become orders are deleted within one (1) year. Order and payment records are kept for as long as
+        required by tax and business laws. Artwork files are kept for up to one (1) year after your order so you can easily reorder,
+        unless you ask us to delete them sooner. Job applications are kept for up to one (1) year.
+      </p>
+
+      <h2>6. How we protect it</h2>
+      <p>
+        The website uses encrypted connections (HTTPS). Access to customer information and files is limited to staff who need it to
+        handle your order. We take reasonable organizational, physical and technical measures to protect your information against loss,
+        misuse and unauthorized access.
+      </p>
+
+      <h2>7. Your rights</h2>
+      <p>Under the Data Privacy Act, you have the right to:</p>
+      <ul>
+        <li>be informed about how your personal information is processed;</li>
+        <li>access the personal information we hold about you;</li>
+        <li>object to processing, and withdraw your consent;</li>
+        <li>have inaccurate information corrected;</li>
+        <li>have your information erased or blocked when it is no longer needed or was processed unlawfully;</li>
+        <li>get a copy of your information in a commonly used electronic format (data portability);</li>
+        <li>be indemnified for damages caused by inaccurate or unlawfully processed information; and</li>
+        <li>file a complaint with the National Privacy Commission (privacy.gov.ph).</li>
+      </ul>
+
+      <h2>8. Contact us</h2>
+      <p>
+        For privacy questions or to exercise your rights, contact our Data Protection Officer at
+        <a href={`mailto:${site.email}?subject=Data%20privacy%20request`}>{site.email}</a>, call
+        <a href={`tel:${site.phone.mobile.tel}`}>{site.phone.mobile.label}</a>, or visit us at the shop. We will respond within a
+        reasonable time.
+      </p>
+
+      <h2>9. Changes to this policy</h2>
+      <p>We may update this policy from time to time. The latest version is always on this page, with the date it was last updated.</p>
+    </article>
+  </div>
+</Base>
+
+<style>
+  .prose-nva :global(h2) {
+    font-family: var(--font-display);
+    font-size: 1.4rem;
+    line-height: 1.2;
+    margin: 2.5rem 0 0.75rem;
+  }
+  .prose-nva :global(h2:first-child) {
+    margin-top: 0;
+  }
+  .prose-nva :global(p),
+  .prose-nva :global(ul) {
+    margin: 0.75rem 0;
+  }
+  .prose-nva :global(ul) {
+    list-style: disc;
+    padding-left: 1.25rem;
+  }
+  .prose-nva :global(li) {
+    margin: 0.35rem 0;
+  }
+  .prose-nva :global(li::marker) {
+    color: var(--color-magenta);
+  }
+  .prose-nva :global(a) {
+    font-weight: 600;
+    text-decoration: underline;
+    text-decoration-color: var(--color-magenta);
+    text-decoration-thickness: 2px;
+    text-underline-offset: 4px;
+    word-break: break-word;
+  }
+</style>

@@ -1,0 +1,277 @@
+---
+import Base from '../layouts/Base.astro';
+import { site } from '../config/site';
+import { categories, quoteHref } from '../data/products';
+import { gallery, photos } from '../data/images';
+import { faqs } from '../data/faq';
+import { faqPage, localBusiness } from '../lib/schema';
+import { accentFill, accentText } from '../lib/accent';
+import Icon from '../components/Icon.astro';
+import InkDrop from '../components/InkDrop.astro';
+import RegMark from '../components/RegMark.astro';
+import ColorBar from '../components/ColorBar.astro';
+import Logo from '../components/Logo.astro';
+import Photo from '../components/Photo.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import DropList from '../components/DropList.astro';
+import ReviewQuote from '../components/ReviewQuote.astro';
+import ShopInfo from '../components/ShopInfo.astro';
+import FaqList from '../components/FaqList.astro';
+import CtaBand from '../components/CtaBand.astro';
+
+const steps = [
+  {
+    title: 'Send your design or idea',
+    text: 'Upload your file, or just tell us what you need. A sketch, a logo, a photo from your phone. All good.',
+  },
+  {
+    title: 'Get a quote',
+    text: 'We reply with the price, the best material for the job and a release date. No surprises.',
+  },
+  {
+    title: 'We print',
+    text: 'Once you approve the layout, it goes to press. We check colors and finishing before it leaves the shop.',
+  },
+  {
+    title: 'Pick up or deliver',
+    text: 'Claim it at our Divisoria shop, or we arrange delivery around Cagayan de Oro.',
+  },
+];
+---
+
+<Base
+  rawTitle
+  title="NVA Printing Services | Printing Shop in Divisoria, Cagayan de Oro"
+  description="One stop printing shop in Divisoria, Cagayan de Oro: tarpaulin printing, signage, sublimation shirts, custom mugs, lanyards and corporate giveaways. Rush orders welcome. Get a free quote."
+  jsonLd={[localBusiness(), faqPage(faqs)]}
+>
+  <!-- ============ HERO ============ -->
+  <section class="relative overflow-hidden border-b border-line" aria-labelledby="hero-title">
+    <div class="halftone halftone-fade pointer-events-none absolute inset-0 text-magenta opacity-[0.14]" aria-hidden="true"></div>
+    <div class="container-x relative grid items-center gap-12 py-12 sm:py-16 lg:grid-cols-[1.2fr_1fr] lg:gap-10 lg:py-24">
+      <div>
+        <p class="label mb-5 flex items-center gap-2.5 text-cyan-ink">
+          <RegMark class="size-5 text-ink" />
+          Printing services · Divisoria, CDO
+        </p>
+        <h1 id="hero-title" class="h-display max-w-[16ch]">
+          One stop shop for your <span class="mark-cmy">printing</span> needs.
+        </h1>
+        <p class="lede mt-6 max-w-xl">
+          Tarpaulins, signage, custom merch and corporate giveaways, printed in Cagayan de Oro.
+        </p>
+        <div class="mt-8 flex flex-col gap-3 xs:flex-row xs:flex-wrap">
+          <a href="/quote/" class="btn btn-primary">
+            <Icon name="quote" /> Get a Quote
+          </a>
+          <a href={site.social.messenger} class="btn btn-messenger" rel="noopener">
+            <Icon name="messenger" /> Message us on Messenger
+          </a>
+        </div>
+        <ul class="mt-8 flex flex-wrap gap-x-6 gap-y-2 text-[0.95rem] font-semibold">
+          <li class="flex items-center gap-2"><InkDrop fill="cyan" class="h-4 w-auto" /> Walk-in or order online</li>
+          <li class="flex items-center gap-2"><InkDrop fill="magenta" class="h-4 w-auto" /> Bulk orders</li>
+          <li class="flex items-center gap-2"><InkDrop fill="yellow" class="h-4 w-auto" /> Rush orders welcome</li>
+        </ul>
+      </div>
+
+      <!-- Press-sheet artwork: the logo mark as overlapping process inks -->
+      <div class="relative mx-auto w-full max-w-md lg:max-w-none" aria-hidden="true">
+        <div class="crop-marks relative rounded-card border border-line bg-paper p-6 shadow-[0_24px_60px_-30px_rgba(20,20,20,0.35)] sm:p-8">
+          <div class="flex items-center justify-between text-[0.7rem] font-semibold tracking-[0.18em] text-grey uppercase">
+            <span>Proof · Sheet 01</span>
+            <RegMark class="size-5 text-ink" />
+          </div>
+          <div class="relative my-6 flex h-52 items-end justify-center sm:h-64">
+            <div class="halftone absolute inset-x-6 inset-y-2 rounded-full text-cyan opacity-25"></div>
+            <InkDrop fill="cyan" class="drop-a relative h-40 w-auto mix-blend-multiply sm:h-52" />
+            <InkDrop fill="magenta" class="drop-b relative -ml-14 h-44 w-auto mix-blend-multiply sm:-ml-[4.5rem] sm:h-56" />
+            <InkDrop fill="yellow" class="drop-c relative -ml-14 h-40 w-auto mix-blend-multiply sm:-ml-[4.5rem] sm:h-52" />
+          </div>
+          <div class="flex items-end justify-between gap-4 border-t border-dashed border-line pt-5">
+            <Logo id="logo-hero" />
+            <ColorBar class="mb-1 hidden h-4 w-24 xs:inline-flex" tints />
+          </div>
+        </div>
+        <div class="absolute -top-4 -right-2 rotate-6 rounded-card bg-yellow px-3 py-1.5 font-display text-sm shadow-md sm:-right-4">
+          Rush OK!
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CATEGORIES ============ -->
+  <section class="py-16 sm:py-24" aria-labelledby="cat-title">
+    <div class="container-x">
+      <SectionHeading id="cat-title" label="What we print" title="From one calling card to a hundred tarps." accent="cyan">
+        Four kinds of printing, one shop. Pick a category to see everything we make.
+      </SectionHeading>
+
+      <ul class="mt-12 grid gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4">
+        {
+          categories.map((c) => (
+            <li class="group relative flex flex-col">
+              <div class:list={['h-1.5 w-full', accentFill[c.accent]]} />
+              <Photo photo={c.photo} ratio="4 / 3" accent={c.accent} label={c.name} sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw" />
+              <h3 class="h3 mt-5">
+                <a href={`/products/#${c.id}`} class="after:absolute after:inset-0 group-hover:underline">
+                  {c.name}
+                </a>
+              </h3>
+              <p class="mt-2 text-grey">{c.blurb}</p>
+              <p class:list={['mt-auto flex items-center gap-1.5 pt-4 font-bold', accentText[c.accent]]}>
+                {c.items.length} products <Icon name="arrow" class="size-4 transition-transform group-hover:translate-x-1" />
+              </p>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <!-- ============ CORPORATE ============ -->
+  <section class="bg-magenta-tint py-16 sm:py-24" aria-labelledby="corp-title">
+    <div class="container-x grid items-center gap-12 lg:grid-cols-2">
+      <div class="crop-marks order-last lg:order-first">
+        <Photo photo={photos.corporate} ratio="5 / 4" accent="magenta" label="Corporate giveaways" sizes="(min-width: 1024px) 50vw, 100vw" />
+      </div>
+      <div>
+        <SectionHeading id="corp-title" label="For companies, schools & events" title="Corporate giveaways, branded on everything." accent="magenta">
+          Anniversaries, seminars, sportsfests, graduations. We handle the shirts, the lanyards, the tokens and the stage tarp, so you deal
+          with one supplier instead of five.
+        </SectionHeading>
+        <DropList
+          class="mt-6 space-y-3 text-[1.0625rem]"
+          accent="magenta"
+          items={[
+            'Bulk orders for staff, clients, delegates and students',
+            'Your logo on shirts, mugs, tumblers, lanyards, umbrellas and more',
+            'Event kits: IDs, giveaways, banners and backdrops in one order',
+            'Options that fit your budget and your deadline',
+          ]}
+        />
+        <div class="mt-8 flex flex-col gap-3 xs:flex-row xs:flex-wrap">
+          <a href="/corporate-giveaways/" class="btn btn-accent">
+            <Icon name="gift" /> Plan your giveaways
+          </a>
+          <a href="/corporate-giveaways/#inquiry" class="btn btn-outline">Send a bulk inquiry</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ HOW IT WORKS ============ -->
+  <section class="py-16 sm:py-24" aria-labelledby="how-title">
+    <div class="container-x">
+      <SectionHeading id="how-title" label="How it works" title="Four steps from idea to print." accent="yellow" />
+      <ol class="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        {
+          steps.map((s, i) => (
+            <li class="card crop-marks flex flex-col p-6">
+              <span class="font-display grid size-14 place-items-center rounded-full bg-yellow text-2xl" aria-hidden="true">
+                {i + 1}
+              </span>
+              <h3 class="h3 mt-5">{s.title}</h3>
+              <p class="mt-2 text-grey">{s.text}</p>
+            </li>
+          ))
+        }
+      </ol>
+      <p class="mt-10 text-center">
+        <a href="/order-online/" class="link">Prefer to order and track online? See how</a>
+      </p>
+    </div>
+  </section>
+
+  <!-- ============ RUSH STRIP ============ -->
+  <section class="relative overflow-hidden bg-yellow" aria-labelledby="rush-title">
+    <div class="halftone pointer-events-none absolute inset-y-0 right-0 w-1/2 text-ink opacity-[0.07]" aria-hidden="true"></div>
+    <div class="container-x relative grid items-center gap-10 py-14 lg:grid-cols-[1fr_1.1fr]">
+      <div>
+        <p class="label mb-3 flex items-center gap-2 text-ink"><Icon name="bolt" class="size-4" /> Nagdali ka?</p>
+        <h2 id="rush-title" class="h2">Rush orders welcome.</h2>
+        <p class="mt-4 max-w-lg text-lg">
+          Event tomorrow? Tell us your deadline up front. We’ll say honestly if we can make it, and we’ll push to make it happen.
+        </p>
+        <a href={`${quoteHref()}?rush=1`} class="btn btn-primary mt-7">
+          <Icon name="bolt" /> Request a rush quote
+        </a>
+      </div>
+      <div class="crop-marks rounded-card bg-paper p-7 sm:p-9">
+        <ReviewQuote />
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ OUR WORK ============ -->
+  <section class="py-16 sm:py-24" aria-labelledby="work-title">
+    <div class="container-x">
+      <div class="flex flex-col justify-between gap-6 sm:flex-row sm:items-end">
+        <SectionHeading id="work-title" label="Our work" title="Printed here in CDO." accent="cyan" />
+        <a href={site.social.facebook} class="btn btn-outline shrink-0" rel="noopener">
+          <Icon name="facebook" /> More on Facebook
+        </a>
+      </div>
+      <ul class="mt-10 grid grid-cols-2 gap-3 sm:gap-5 lg:grid-cols-3">
+        {
+          gallery.map((g, i) => (
+            <li class="group relative overflow-hidden rounded-card">
+              <Photo
+                photo={g}
+                ratio="4 / 5"
+                accent={(['cyan', 'magenta', 'yellow', 'ink'] as const)[i % 4]}
+                sizes="(min-width: 1024px) 33vw, 50vw"
+                imgClass="transition-transform duration-500 group-hover:scale-105"
+              />
+              <p class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-ink/85 to-transparent px-3 pt-10 pb-3 text-sm font-bold text-paper sm:text-base">
+                {g.caption}
+              </p>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <!-- ============ SHOP INFO ============ -->
+  <section class="border-t border-line bg-offwhite py-16 sm:py-24" aria-labelledby="visit-title">
+    <div class="container-x">
+      <SectionHeading id="visit-title" label="Visit the shop" title="Walk in, say hi, bring your file." accent="magenta" class="mb-10" />
+      <ShopInfo headingLevel="h3" />
+    </div>
+  </section>
+
+  <!-- ============ FAQ ============ -->
+  <section class="py-16 sm:py-24" aria-labelledby="faq-title">
+    <div class="container-x grid gap-10 lg:grid-cols-[1fr_2fr]">
+      <SectionHeading id="faq-title" label="Good to know" title="Questions we get a lot." accent="cyan">
+        Still unsure? <a href={site.social.messenger} class="link text-ink" rel="noopener">Ask us on Messenger</a>.
+      </SectionHeading>
+      <FaqList faqs={faqs} />
+    </div>
+  </section>
+
+  <CtaBand />
+</Base>
+
+<style>
+  @media (prefers-reduced-motion: no-preference) {
+    .drop-a,
+    .drop-b,
+    .drop-c {
+      animation: drip 0.9s cubic-bezier(0.2, 0.8, 0.2, 1.2) both;
+    }
+    .drop-b {
+      animation-delay: 0.12s;
+    }
+    .drop-c {
+      animation-delay: 0.24s;
+    }
+    @keyframes drip {
+      from {
+        transform: translateY(-18px);
+        opacity: 0;
+      }
+    }
+  }
+</style>

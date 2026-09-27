@@ -1,0 +1,19 @@
+---
+/** CMYK color bar, like the control strip on a press sheet. */
+interface Props {
+  class?: string;
+  tints?: boolean;
+  /** Only the three process colors (for use on black). */
+  cmy?: boolean;
+}
+const { class: className = 'h-3 w-28', tints = false, cmy = false } = Astro.props;
+const swatches = tints
+  ? ['#00AEEF', '#66CEF5', '#EC008C', '#F466BA', '#FFD400', '#FFE566', '#141414', '#727272']
+  : cmy
+    ? ['#00AEEF', '#EC008C', '#FFD400']
+    : ['#00AEEF', '#EC008C', '#FFD400', '#141414'];
+---
+
+<span class:list={['inline-flex overflow-hidden', className]} aria-hidden="true">
+  {swatches.map((c) => <span class="h-full flex-1" style={`background:${c}`} />)}
+</span>

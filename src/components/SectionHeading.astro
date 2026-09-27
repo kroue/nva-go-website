@@ -1,0 +1,34 @@
+---
+import type { Accent } from '../data/products';
+import InkDrop from './InkDrop.astro';
+
+interface Props {
+  label: string;
+  title: string;
+  accent?: Accent;
+  align?: 'left' | 'center';
+  id?: string;
+  as?: 'h1' | 'h2';
+  tone?: 'ink' | 'paper';
+  class?: string;
+}
+const { label, title, accent = 'cyan', align = 'left', id, as: Tag = 'h2', tone = 'ink', class: className = '' } = Astro.props;
+const dropFill = accent === 'ink' && tone === 'paper' ? 'paper' : accent;
+const labelColor =
+  tone === 'paper' ? 'text-on-ink-muted' : accent === 'cyan' ? 'text-cyan-ink' : accent === 'magenta' ? 'text-magenta-ink' : 'text-ink';
+---
+
+<div class:list={['max-w-3xl', align === 'center' && 'mx-auto text-center', className]}>
+  <p class:list={['label mb-3 inline-flex items-center gap-2', labelColor]}>
+    <InkDrop fill={dropFill} class="h-4 w-auto" />
+    {label}
+  </p>
+  <Tag id={id} class:list={[Tag === 'h1' ? 'h-display' : 'h2', tone === 'paper' ? 'text-paper' : 'text-ink']}>{title}</Tag>
+  {
+    Astro.slots.has('default') && (
+      <div class:list={['mt-4 text-lg leading-relaxed', tone === 'paper' ? 'text-on-ink-muted' : 'text-grey']}>
+        <slot />
+      </div>
+    )
+  }
+</div>

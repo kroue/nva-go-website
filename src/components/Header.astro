@@ -1,0 +1,130 @@
+---
+import { nav, site } from '../config/site';
+import Logo from './Logo.astro';
+import Icon from './Icon.astro';
+import OpenStatus from './OpenStatus.astro';
+import ColorBar from './ColorBar.astro';
+
+const path = Astro.url.pathname;
+const isCurrent = (href: string) => path === href || (href !== '/' && path.startsWith(href));
+---
+
+<div class="on-ink bg-ink text-paper">
+  <ColorBar class="flex h-1 w-full" cmy />
+  <div class="container-x flex h-9 items-center justify-between gap-4 text-[0.8125rem]">
+    <OpenStatus tone="paper" />
+    <div class="flex items-center gap-5">
+      <a href={`tel:${site.phone.mobile.tel}`} class="hidden items-center gap-1.5 font-semibold hover:text-yellow xs:inline-flex">
+        <Icon name="phone" class="size-3.5" />
+        <span>{site.phone.mobile.label}</span>
+      </a>
+      <a href={site.social.facebook} class="hidden items-center gap-1.5 font-semibold hover:text-yellow md:inline-flex" rel="noopener">
+        <Icon name="facebook" class="size-3.5" />
+        <span>Facebook</span>
+      </a>
+    </div>
+  </div>
+</div>
+
+<header class="sticky top-0 z-40 border-b border-line bg-paper/95 backdrop-blur supports-[backdrop-filter]:bg-paper/85">
+  <div class="container-x flex h-16 items-center justify-between gap-4">
+    <a href="/" class="-m-1 rounded-card p-1" aria-label={`${site.name} home`}>
+      <Logo size="sm" id="logo-header" />
+    </a>
+
+    <nav aria-label="Main" class="hidden lg:block">
+      <ul class="flex items-center gap-1">
+        {
+          nav.map((item) => (
+            <li>
+              <a
+                href={item.href}
+                class="nav-link rounded-card px-3 py-2 text-[0.95rem] font-semibold"
+                aria-current={isCurrent(item.href) ? 'page' : undefined}
+              >
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <div class="flex items-center gap-2">
+      <a href="/quote/" class="btn btn-accent hidden min-h-11 px-4 py-2.5 text-[0.95rem] sm:inline-flex">
+        Get a Quote
+      </a>
+      <button
+        type="button"
+        class="inline-flex size-11 items-center justify-center rounded-card border-2 border-ink lg:hidden"
+        aria-expanded="false"
+        aria-controls="mobile-nav"
+        data-menu-toggle
+      >
+        <Icon name="menu" class="size-5" />
+        <span class="sr-only">Menu</span>
+      </button>
+    </div>
+  </div>
+
+  <nav id="mobile-nav" aria-label="Mobile" class="border-t border-line bg-paper lg:hidden" hidden>
+    <ul class="container-x grid gap-1 py-3">
+      {
+        nav.map((item) => (
+          <li>
+            <a
+              href={item.href}
+              class="flex min-h-12 items-center justify-between rounded-card px-2 text-lg font-bold hover:bg-offwhite"
+              aria-current={isCurrent(item.href) ? 'page' : undefined}
+            >
+              {item.label}
+              <Icon name="arrow" class="size-4 text-grey" />
+            </a>
+          </li>
+        ))
+      }
+      <li>
+        <a href="/careers/" class="flex min-h-12 items-center justify-between rounded-card px-2 text-lg font-bold hover:bg-offwhite">
+          Careers
+          <Icon name="arrow" class="size-4 text-grey" />
+        </a>
+      </li>
+      <li class="pt-2">
+        <a href="/quote/" class="btn btn-accent w-full">Get a Quote</a>
+      </li>
+    </ul>
+  </nav>
+</header>
+
+<style>
+  .nav-link {
+    background-image: var(--gradient-cmy);
+    background-repeat: no-repeat;
+    background-position: 0.75rem calc(100% - 0.2rem);
+    background-size: 0 3px;
+    transition: background-size 0.2s ease;
+  }
+  .nav-link:hover,
+  .nav-link[aria-current='page'] {
+    background-size: calc(100% - 1.5rem) 3px;
+  }
+</style>
+
+<script>
+  const toggle = document.querySelector<HTMLButtonElement>('[data-menu-toggle]');
+  const panel = document.getElementById('mobile-nav');
+  if (toggle && panel) {
+    const set = (open: boolean) => {
+      toggle.setAttribute('aria-expanded', String(open));
+      panel.hidden = !open;
+    };
+    toggle.addEventListener('click', () => set(toggle.getAttribute('aria-expanded') !== 'true'));
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !panel.hidden) {
+        set(false);
+        toggle.focus();
+      }
+    });
+    matchMedia('(min-width: 64rem)').addEventListener('change', (e) => e.matches && set(false));
+  }
+</script>

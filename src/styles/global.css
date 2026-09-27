@@ -1,0 +1,320 @@
+@import 'tailwindcss';
+
+/* ==========================================================================
+   NVA design tokens
+   CMYK palette from the logo. Rules of thumb:
+   - Mostly ink on paper. One CMYK accent per section.
+   - Cyan / magenta / yellow are FILLS. For text on white use the *-ink shades
+     (AA contrast). Yellow is never used for text on white.
+   - The C→M→Y gradient is an accent only: hero, dividers, button hover.
+   ========================================================================== */
+@theme inline {
+  /* Process colors (fills, shapes, bars) */
+  --color-cyan: #00aeef;
+  --color-magenta: #ec008c;
+  --color-yellow: #ffd400;
+  --color-ink: #141414;
+
+  /* Text-safe shades, ≥ 5:1 on white */
+  --color-cyan-ink: #00739e;
+  --color-magenta-ink: #c4006f;
+
+  /* Tints for soft backgrounds */
+  --color-cyan-tint: #e5f6fd;
+  --color-magenta-tint: #fde6f3;
+  --color-yellow-tint: #fff8d6;
+
+  /* Paper & neutrals */
+  --color-paper: #ffffff;
+  --color-offwhite: #f6f6f4;
+  --color-grey: #6b6b6b; /* secondary text, 5.3:1 on white */
+  --color-line: #e3e3de;
+  --color-ink-soft: #2a2a2a;
+  --color-on-ink-muted: #b5b5b5; /* secondary text on ink, 8.6:1 */
+
+  /* Typography */
+  --font-display: var(--font-archivo);
+  --font-label: var(--font-cormorant);
+  --font-sans: var(--font-figtree);
+
+  --text-display: clamp(2.35rem, 1.4rem + 4.6vw, 4.75rem);
+  --text-display--line-height: 1.02;
+  --text-h2: clamp(1.75rem, 1.25rem + 2.2vw, 2.9rem);
+  --text-h2--line-height: 1.08;
+  --text-h3: clamp(1.2rem, 1.05rem + 0.6vw, 1.45rem);
+  --text-h3--line-height: 1.2;
+
+  --radius-card: 0.25rem;
+
+  --shadow-cmy: 3px 3px 0 var(--color-cyan), 6px 6px 0 var(--color-magenta), 9px 9px 0 var(--color-yellow);
+
+  --breakpoint-xs: 25rem;
+}
+
+:root {
+  --gradient-cmy: linear-gradient(90deg, #00aeef 0%, #ec008c 50%, #ffd400 100%);
+  --gradient-cmy-diag: linear-gradient(120deg, #00aeef 0%, #ec008c 55%, #ffd400 100%);
+  --header-h: 4rem;
+  color-scheme: light;
+}
+
+/* ==========================================================================
+   Base
+   ========================================================================== */
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-padding-top: calc(var(--header-h) + 1rem);
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
+  }
+  body {
+    @apply bg-paper font-sans text-ink antialiased;
+    font-size: 1.0625rem;
+    line-height: 1.6;
+    overflow-x: clip;
+    text-rendering: optimizeLegibility;
+  }
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-display;
+    font-weight: 400; /* Archivo Black ships a single heavy weight */
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+  }
+  p {
+    text-wrap: pretty;
+  }
+  a {
+    text-underline-offset: 0.18em;
+  }
+  :focus-visible {
+    outline: 3px solid var(--color-ink);
+    outline-offset: 3px;
+    box-shadow: 0 0 0 6px var(--color-yellow);
+    border-radius: 2px;
+  }
+  .on-ink :focus-visible {
+    outline-color: var(--color-yellow);
+    box-shadow: 0 0 0 6px var(--color-ink);
+  }
+  ::selection {
+    background: var(--color-yellow);
+    color: var(--color-ink);
+  }
+  img {
+    height: auto;
+  }
+}
+
+/* ==========================================================================
+   Components
+   ========================================================================== */
+@layer components {
+  .container-x {
+    @apply mx-auto w-full max-w-[76rem] px-4 sm:px-6 lg:px-8;
+  }
+
+  /* Serif small-caps label, echoing "PRINTING SERVICES" in the logo */
+  .label {
+    @apply font-label text-[1.05rem] font-bold tracking-[0.18em];
+    font-variant-caps: all-small-caps;
+    line-height: 1.3;
+  }
+  .label-lg {
+    @apply font-label text-[1.1rem] font-bold tracking-[0.22em];
+  }
+
+  .h-display {
+    @apply font-display text-display;
+  }
+  .h2 {
+    @apply font-display text-h2;
+  }
+  .h3 {
+    @apply font-display text-h3;
+  }
+  .lede {
+    @apply text-lg leading-relaxed text-grey sm:text-xl;
+  }
+
+  /* Buttons ---------------------------------------------------------------- */
+  .btn {
+    @apply inline-flex min-h-12 items-center justify-center gap-2 rounded-card px-5 py-3 text-base font-bold leading-tight no-underline select-none;
+    transition:
+      transform 0.15s ease,
+      box-shadow 0.15s ease,
+      background-color 0.15s ease,
+      color 0.15s ease;
+  }
+  .btn svg {
+    @apply size-5 shrink-0;
+  }
+  /* Primary: ink with a CMY "misregistration" shadow on hover */
+  .btn-primary {
+    @apply bg-ink text-paper;
+  }
+  .btn-primary:hover {
+    transform: translate(-3px, -3px);
+    box-shadow: var(--shadow-cmy);
+  }
+  .btn-accent {
+    @apply bg-magenta-ink text-paper;
+  }
+  .btn-accent:hover {
+    @apply bg-ink;
+    transform: translate(-3px, -3px);
+    box-shadow: var(--shadow-cmy);
+  }
+  .btn-messenger {
+    @apply bg-cyan text-ink;
+  }
+  .btn-messenger:hover {
+    transform: translate(-3px, -3px);
+    box-shadow: 3px 3px 0 var(--color-ink);
+  }
+  /* Outline: gradient underline sweeps in on hover */
+  .btn-outline {
+    @apply border-2 border-ink bg-paper text-ink;
+    background-image: var(--gradient-cmy);
+    background-repeat: no-repeat;
+    background-position: 0 100%;
+    background-size: 0% 5px;
+    transition:
+      background-size 0.25s ease,
+      transform 0.15s ease;
+  }
+  .btn-outline:hover {
+    background-size: 100% 5px;
+  }
+  .on-ink .btn-outline {
+    @apply border-paper bg-ink text-paper;
+  }
+  .btn-yellow {
+    @apply bg-yellow text-ink;
+  }
+  .btn-yellow:hover {
+    transform: translate(-3px, -3px);
+    box-shadow: 3px 3px 0 var(--color-paper);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .btn:hover {
+      transform: none !important;
+    }
+  }
+
+  .link {
+    @apply font-semibold underline decoration-2 underline-offset-4;
+    text-decoration-color: var(--color-magenta);
+  }
+  .link:hover {
+    text-decoration-color: var(--color-cyan);
+  }
+
+  /* Cards --------------------------------------------------------------- */
+  .card {
+    @apply relative rounded-card border border-line bg-paper;
+  }
+
+  /* Form controls ------------------------------------------------------- */
+  .field-label {
+    @apply mb-1.5 block text-[0.95rem] font-bold;
+  }
+  .field-hint {
+    @apply mt-1 block text-sm text-grey;
+  }
+  .input {
+    @apply block min-h-12 w-full rounded-card border-2 border-line bg-paper px-3.5 py-2.5 text-base text-ink placeholder:text-[#767676];
+    transition: border-color 0.15s ease;
+  }
+  .input:hover {
+    @apply border-[#c9c9c3];
+  }
+  .input:focus-visible {
+    @apply border-ink;
+    outline: none;
+    box-shadow: 0 0 0 4px var(--color-cyan-tint), 0 0 0 5px var(--color-cyan);
+  }
+  .input[aria-invalid='true'] {
+    @apply border-magenta-ink;
+  }
+  select.input {
+    @apply appearance-none bg-no-repeat pr-10;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%23141414'%3E%3Cpath d='M5.3 7.3a1 1 0 0 1 1.4 0L10 10.6l3.3-3.3a1 1 0 1 1 1.4 1.4l-4 4a1 1 0 0 1-1.4 0l-4-4a1 1 0 0 1 0-1.4z'/%3E%3C/svg%3E");
+    background-position: right 0.75rem center;
+    background-size: 1.25rem;
+  }
+  .check {
+    @apply mt-0.5 size-5 shrink-0 accent-ink;
+  }
+}
+
+/* ==========================================================================
+   Print-shop motifs
+   ========================================================================== */
+@layer utilities {
+  /* Thin crop marks just outside the four corners of a box */
+  .crop-marks {
+    position: relative;
+  }
+  .crop-marks::before {
+    content: '';
+    position: absolute;
+    inset: -11px;
+    pointer-events: none;
+    --m: var(--crop-color, #141414);
+    background:
+      linear-gradient(var(--m), var(--m)) left 0 top 11px / 7px 1px no-repeat,
+      linear-gradient(var(--m), var(--m)) left 11px top 0 / 1px 7px no-repeat,
+      linear-gradient(var(--m), var(--m)) right 0 top 11px / 7px 1px no-repeat,
+      linear-gradient(var(--m), var(--m)) right 11px top 0 / 1px 7px no-repeat,
+      linear-gradient(var(--m), var(--m)) left 0 bottom 11px / 7px 1px no-repeat,
+      linear-gradient(var(--m), var(--m)) left 11px bottom 0 / 1px 7px no-repeat,
+      linear-gradient(var(--m), var(--m)) right 0 bottom 11px / 7px 1px no-repeat,
+      linear-gradient(var(--m), var(--m)) right 11px bottom 0 / 1px 7px no-repeat;
+    opacity: 0.55;
+  }
+
+  /* Halftone dot texture. Set color with `color` / text-* on the element. */
+  .halftone {
+    background-image: radial-gradient(circle at center, currentColor 1.1px, transparent 1.6px);
+    background-size: 9px 9px;
+  }
+  .halftone-fade {
+    mask-image: radial-gradient(ellipse at 80% 20%, #000 0%, transparent 70%);
+  }
+
+  .bg-cmy {
+    background-image: var(--gradient-cmy);
+  }
+  .bg-cmy-diag {
+    background-image: var(--gradient-cmy-diag);
+  }
+  .text-cmy {
+    background-image: var(--gradient-cmy);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  /* Gradient underline under a highlighted word */
+  .mark-cmy {
+    background-image: var(--gradient-cmy);
+    background-repeat: no-repeat;
+    background-size: 100% 0.16em;
+    background-position: 0 92%;
+    padding-bottom: 0.04em;
+  }
+
+  .skip-link {
+    @apply absolute left-3 top-3 z-[100] -translate-y-24 rounded-card bg-ink px-4 py-3 font-bold text-paper;
+  }
+  .skip-link:focus {
+    @apply translate-y-0;
+  }
+}

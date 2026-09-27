@@ -1,0 +1,37 @@
+---
+/** Closing call to action used at the bottom of most pages. */
+import { site } from '../config/site';
+import Icon from './Icon.astro';
+import InkDrop from './InkDrop.astro';
+
+interface Props {
+  title?: string;
+  text?: string;
+}
+const {
+  title = 'Ready to print? Send us your file today.',
+  text = 'Get a free quote in a few minutes, or message us on Messenger and we’ll sort it out together.',
+} = Astro.props;
+---
+
+<section class="on-ink relative overflow-hidden bg-ink text-paper" aria-labelledby="cta-title">
+  <div class="halftone halftone-fade pointer-events-none absolute inset-0 text-magenta opacity-40" aria-hidden="true"></div>
+  <div class="pointer-events-none absolute -right-10 -bottom-16 hidden gap-0 sm:flex" aria-hidden="true">
+    <InkDrop fill="cyan" class="h-56 w-auto opacity-90 mix-blend-screen" />
+    <InkDrop fill="magenta" class="-ml-20 h-56 w-auto opacity-90 mix-blend-screen" />
+    <InkDrop fill="yellow" class="-ml-20 h-56 w-auto opacity-90 mix-blend-screen" />
+  </div>
+  <div class="container-x relative py-16 sm:py-20">
+    <p class="label mb-3 text-yellow">Salamat sa pagsalig!</p>
+    <h2 id="cta-title" class="h2 max-w-2xl">{title}</h2>
+    <p class="mt-4 max-w-xl text-lg text-on-ink-muted">{text}</p>
+    <div class="mt-8 flex flex-col gap-3 xs:flex-row xs:flex-wrap">
+      <a href="/quote/" class="btn btn-yellow">
+        <Icon name="quote" /> Get a Quote
+      </a>
+      <a href={site.social.messenger} class="btn btn-outline" rel="noopener">
+        <Icon name="messenger" /> Message us on Messenger
+      </a>
+    </div>
+  </div>
+</section>

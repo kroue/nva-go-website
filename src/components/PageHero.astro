@@ -1,0 +1,33 @@
+---
+import type { Crumb } from '../lib/schema';
+import type { Accent } from '../data/products';
+import Breadcrumbs from './Breadcrumbs.astro';
+import SectionHeading from './SectionHeading.astro';
+import RegMark from './RegMark.astro';
+
+interface Props {
+  crumbs: Crumb[];
+  label: string;
+  title: string;
+  accent?: Accent;
+}
+const { crumbs, label, title, accent = 'cyan' } = Astro.props;
+const halftone: Record<Accent, string> = {
+  cyan: 'text-cyan',
+  magenta: 'text-magenta',
+  yellow: 'text-[#e0b800]',
+  ink: 'text-ink',
+};
+---
+
+<section class="relative overflow-hidden border-b border-line">
+  <div class:list={['halftone halftone-fade pointer-events-none absolute inset-0 opacity-20', halftone[accent]]} aria-hidden="true"></div>
+  <RegMark class="pointer-events-none absolute top-6 right-6 hidden size-8 text-ink/40 sm:block" />
+  <div class="container-x relative py-10 sm:py-14">
+    <Breadcrumbs crumbs={crumbs} />
+    <SectionHeading as="h1" label={label} title={title} accent={accent} class="mt-6 max-w-4xl">
+      <slot />
+    </SectionHeading>
+    {Astro.slots.has('actions') && <div class="mt-8 flex flex-col gap-3 xs:flex-row xs:flex-wrap"><slot name="actions" /></div>}
+  </div>
+</section>

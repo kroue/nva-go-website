@@ -1,0 +1,31 @@
+---
+import type { Faq } from '../data/faq';
+import Icon from './Icon.astro';
+
+interface Props {
+  faqs: Faq[];
+}
+const { faqs } = Astro.props;
+---
+
+<div class="divide-y divide-line border-y border-line">
+  {
+    faqs.map((f) => (
+      <details class="faq group">
+        <summary class="flex min-h-14 cursor-pointer list-none items-center justify-between gap-4 py-4 text-lg font-bold">
+          <span>{f.q}</span>
+          <span class="grid size-8 shrink-0 place-items-center rounded-full border-2 border-ink transition-transform group-open:rotate-45 group-open:bg-yellow">
+            <Icon name="close" class="size-3.5 rotate-45" />
+          </span>
+        </summary>
+        <p class="max-w-3xl pb-5 text-grey">{f.a}</p>
+      </details>
+    ))
+  }
+</div>
+
+<style>
+  .faq summary::-webkit-details-marker {
+    display: none;
+  }
+</style>

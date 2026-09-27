@@ -1,0 +1,41 @@
+---
+/**
+ * The ink-drop shape from the NVA logo. Used as the logo mark, as bullets and as decoration.
+ * fill: 'cmy' renders the logo's cyan → magenta → yellow gradient.
+ */
+interface Props {
+  fill?: 'cmy' | 'cyan' | 'magenta' | 'yellow' | 'ink' | 'paper' | 'current';
+  class?: string;
+  id?: string;
+  highlight?: boolean;
+}
+const { fill = 'cmy', class: className = 'h-6 w-auto', id = 'drop', highlight = false } = Astro.props;
+const colors: Record<string, string> = {
+  cyan: '#00AEEF',
+  magenta: '#EC008C',
+  yellow: '#FFD400',
+  ink: '#141414',
+  paper: '#FFFFFF',
+  current: 'currentColor',
+};
+const gid = `cmy-${id}`;
+---
+
+<svg class={className} viewBox="0 0 40 52" aria-hidden="true" focusable="false">
+  {
+    fill === 'cmy' && (
+      <defs>
+        <linearGradient id={gid} x1="0" y1="0" x2="0.35" y2="1">
+          <stop offset="0" stop-color="#00AEEF" />
+          <stop offset="0.55" stop-color="#EC008C" />
+          <stop offset="1" stop-color="#FFD400" />
+        </linearGradient>
+      </defs>
+    )
+  }
+  <path
+    d="M20 1.5C20 1.5 3 21.2 3 33.6a17 17 0 0 0 34 0C37 21.2 20 1.5 20 1.5z"
+    fill={fill === 'cmy' ? `url(#${gid})` : colors[fill]}
+  />
+  {highlight && <path d="M11.5 34a8.5 8.5 0 0 0 6 8" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" opacity=".8" />}
+</svg>

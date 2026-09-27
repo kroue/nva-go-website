@@ -1,0 +1,28 @@
+---
+/**
+ * NVA logo lockup: ink-drop mark + "NVA" + "PRINTING SERVICES".
+ * TODO: this is a vector recreation. To use the official artwork instead, add it as
+ * src/assets/logo.png (or .svg) and render it here with <Image> from 'astro:assets'.
+ */
+import InkDrop from './InkDrop.astro';
+
+interface Props {
+  size?: 'sm' | 'md' | 'lg';
+  tone?: 'ink' | 'paper';
+  id?: string;
+}
+const { size = 'md', tone = 'ink', id = 'logo' } = Astro.props;
+const s = {
+  sm: { drop: 'h-8', nva: 'text-[1.55rem]', sub: 'text-[0.62rem] tracking-[0.18em]' },
+  md: { drop: 'h-10', nva: 'text-[1.9rem]', sub: 'text-[0.7rem] tracking-[0.2em]' },
+  lg: { drop: 'h-16 sm:h-20', nva: 'text-[2.9rem] sm:text-[3.6rem]', sub: 'text-[0.95rem] sm:text-[1.15rem] tracking-[0.24em]' },
+}[size];
+---
+
+<span class:list={['inline-flex items-center gap-2.5', tone === 'paper' ? 'text-paper' : 'text-ink']}>
+  <InkDrop class={`${s.drop} w-auto shrink-0`} id={id} highlight />
+  <span class="flex flex-col leading-none">
+    <span class:list={['font-display tracking-[-0.02em]', s.nva]}>NVA</span>
+    <span class:list={['font-label font-bold uppercase', s.sub]} style="margin-top:0.18em">Printing Services</span>
+  </span>
+</span>

@@ -1,0 +1,19 @@
+---
+import { site } from '../config/site';
+
+interface Props {
+  class?: string;
+}
+const { class: className = '' } = Astro.props;
+---
+
+<figure class:list={['relative', className]}>
+  <span class="font-display absolute -top-6 -left-1 text-7xl leading-none opacity-25 select-none" aria-hidden="true">“</span>
+  <blockquote class="relative text-xl font-semibold leading-snug sm:text-2xl">
+    <p>{site.review.quote}</p>
+  </blockquote>
+  <figcaption class="mt-4 flex items-center gap-2 text-[0.95rem]">
+    <span aria-hidden="true" class="text-lg tracking-tight">★★★★★</span>
+    <span><strong>{site.review.author}</strong>, {site.review.source}</span>
+  </figcaption>
+</figure>

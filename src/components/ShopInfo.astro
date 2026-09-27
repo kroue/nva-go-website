@@ -1,0 +1,99 @@
+---
+/** Visit-the-shop block: address, hours, contacts and a directions card (no heavy map embed). */
+import { site } from '../config/site';
+import Icon from './Icon.astro';
+import OpenStatus from './OpenStatus.astro';
+import RegMark from './RegMark.astro';
+import InkDrop from './InkDrop.astro';
+
+interface Props {
+  headingLevel?: 'h2' | 'h3';
+}
+const { headingLevel: H = 'h2' } = Astro.props;
+---
+
+<div class="grid gap-8 lg:grid-cols-2 lg:gap-12">
+  <div class="space-y-6">
+    <div>
+      <H class="h3 mb-2">Find us in Divisoria</H>
+      <p class="text-lg">
+        {site.address.street}, {site.address.city} {site.address.postalCode}
+      </p>
+      <p class="text-grey">{site.address.landmark}. Look for the NVA sign.</p>
+    </div>
+
+    <dl class="grid gap-5 sm:grid-cols-2">
+      <div>
+        <dt class="label mb-1 text-magenta-ink">Hours</dt>
+        <dd>
+          {site.hoursLabel}<br />
+          <span class="text-grey">{site.closedLabel}</span>
+          <div class="mt-2 rounded-full bg-offwhite px-3 py-1.5 text-sm font-semibold w-fit"><OpenStatus /></div>
+        </dd>
+      </div>
+      <div>
+        <dt class="label mb-1 text-magenta-ink">Call or text</dt>
+        <dd class="space-y-1">
+          <a href={`tel:${site.phone.mobile.tel}`} class="link block w-fit">{site.phone.mobile.label}</a>
+          {
+            site.phone.landlines.map((l) => (
+              <a href={`tel:${l.tel}`} class="block w-fit text-grey hover:text-ink hover:underline">
+                {l.label}
+              </a>
+            ))
+          }
+        </dd>
+      </div>
+      <div class="sm:col-span-2">
+        <dt class="label mb-1 text-magenta-ink">Email</dt>
+        <dd><a href={`mailto:${site.email}`} class="link break-all">{site.email}</a></dd>
+      </div>
+    </dl>
+
+    <div class="flex flex-col gap-3 xs:flex-row xs:flex-wrap">
+      <a href={site.mapsUrl} class="btn btn-primary" rel="noopener">
+        <Icon name="pin" /> Get directions
+      </a>
+      <a href={site.social.messenger} class="btn btn-outline" rel="noopener">
+        <Icon name="messenger" /> Message us
+      </a>
+    </div>
+  </div>
+
+  <a
+    href={site.mapsUrl}
+    rel="noopener"
+    class="crop-marks group relative block min-h-72 overflow-hidden rounded-card bg-magenta-tint p-6 sm:p-8"
+    aria-label="Open directions to NVA Printing Services in Google Maps"
+  >
+    <!-- Stylised street map. Links out to Google Maps instead of loading a heavy iframe. -->
+    <svg class="absolute inset-0 size-full" viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+      <g stroke="#fff" stroke-linecap="square" fill="none">
+        <path d="M-10 190 L410 150" stroke-width="22" />
+        <path d="M150 -10 L190 310" stroke-width="18" />
+        <path d="M-10 60 L410 30" stroke-width="10" />
+        <path d="M300 -10 L330 310" stroke-width="10" />
+        <path d="M40 -10 L60 310" stroke-width="8" />
+        <path d="M-10 270 L410 250" stroke-width="8" />
+      </g>
+      <g fill="#141414" font-family="var(--font-figtree), sans-serif" font-size="11" font-weight="700" letter-spacing="1">
+        <text x="232" y="160" transform="rotate(-5 232 160)">CHAVEZ ST.</text>
+        <text x="168" y="20" transform="rotate(84.5 168 20)">PABAYO ST.</text>
+      </g>
+    </svg>
+    <div class="halftone pointer-events-none absolute inset-0 text-magenta opacity-20" aria-hidden="true"></div>
+    <RegMark class="absolute top-4 right-4 size-7 text-ink/60" />
+    <div class="absolute top-[56%] left-[45%] -translate-x-1/2 -translate-y-full" aria-hidden="true">
+      <InkDrop fill="magenta" class="h-14 w-auto rotate-180 drop-shadow-md transition-transform group-hover:-translate-y-1" />
+    </div>
+    <div class="relative mt-auto flex h-full min-h-60 flex-col justify-end">
+      <div class="w-fit rounded-card bg-paper px-4 py-3 shadow-md">
+        <p class="font-display text-lg leading-tight">NVA Printing Services</p>
+        <p class="text-sm text-grey">Beside Greenwich Divisoria</p>
+        <p class="mt-2 inline-flex items-center gap-1.5 text-sm font-bold text-magenta-ink">
+          Open in Google Maps <Icon name="external" class="size-4" />
+        </p>
+      </div>
+    </div>
+  </a>
+</div>

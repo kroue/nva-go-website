@@ -1,0 +1,80 @@
+---
+import '../styles/global.css';
+import { Font } from 'astro:assets';
+import { DEMO_MODE, SITE_URL, site } from '../config/site';
+import { breadcrumbs as breadcrumbSchema, type Crumb } from '../lib/schema';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import MobileBar from '../components/MobileBar.astro';
+import DemoBadge from '../components/DemoBadge.astro';
+
+interface Props {
+  /** Page title. Suffixed with the business name unless `rawTitle` is set. */
+  title: string;
+  rawTitle?: boolean;
+  description: string;
+  /** Breadcrumb trail (excluding Home). Adds BreadcrumbList JSON-LD. */
+  crumbs?: Crumb[];
+  jsonLd?: object[];
+  image?: string;
+  noindex?: boolean;
+}
+
+const { title, rawTitle = false, description, crumbs, jsonLd = [], image = '/og.png', noindex = false } = Astro.props;
+
+const fullTitle = rawTitle ? title : `${title} | ${site.name}`;
+const canonical = new URL(Astro.url.pathname, SITE_URL).href;
+const ogImage = new URL(image, SITE_URL).href;
+const robots = DEMO_MODE || noindex ? 'noindex,nofollow' : 'index,follow,max-image-preview:large';
+const schemas = [...jsonLd, ...(crumbs?.length ? [breadcrumbSchema(crumbs)] : [])];
+---
+
+<!doctype html>
+<html lang="en-PH">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <meta name="robots" content={robots} />
+    <meta name="theme-color" content="#141414" />
+    <meta name="format-detection" content="telephone=no" />
+
+    <Font cssVariable="--font-archivo" preload />
+    <Font cssVariable="--font-figtree" preload />
+    <Font cssVariable="--font-cormorant" />
+
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon-48.png" type="image/png" sizes="48x48" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:locale" content="en_PH" />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={`${site.name}, ${site.tagline}`} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    {schemas.map((s) => <script type="application/ld+json" set:html={JSON.stringify(s)} />)}
+  </head>
+  <body class="flex min-h-dvh flex-col pb-[calc(4rem+env(safe-area-inset-bottom))] md:pb-0">
+    <a href="#main" class="skip-link">Skip to content</a>
+    <Header />
+    <main id="main" class="flex-1" tabindex="-1">
+      <slot />
+    </main>
+    <Footer />
+    <MobileBar />
+    {DEMO_MODE && <DemoBadge />}
+  </body>
+</html>

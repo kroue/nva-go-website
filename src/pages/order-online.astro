@@ -1,0 +1,83 @@
+---
+import Base from '../layouts/Base.astro';
+import { NVAGO_URL, site } from '../config/site';
+import PageHero from '../components/PageHero.astro';
+import QuoteForm from '../components/QuoteForm.astro';
+import Icon from '../components/Icon.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+
+const crumbs = [{ name: 'Order Online', path: '/order-online/' }];
+const hasApp = NVAGO_URL.trim() !== '';
+
+const steps = [
+  { title: 'Open NVAGo', text: 'Tap the button below. It works in your phone’s browser, no app download needed.' },
+  { title: 'Choose your product', text: 'Pick what you need, enter the size and quantity, and upload your artwork.' },
+  { title: 'Confirm and book', text: 'Review the details and submit. You’ll get an order number right away.' },
+  { title: 'Track until pick-up', text: 'Check your order status anytime, from layout to printing to ready for pick-up.' },
+];
+---
+
+<Base
+  title="Order Printing Online & Track Your Order"
+  description="Order tarpaulins, shirts, mugs and more online from NVA Printing Services in Cagayan de Oro, then track your order status from layout to pick-up."
+  crumbs={crumbs}
+>
+  <PageHero crumbs={crumbs} label="Order online" title={hasApp ? 'Order from your phone. Track it until pick-up.' : 'Order from your phone.'} accent="yellow">
+    {
+      hasApp
+        ? 'NVAGo is our online ordering and tracking system. Place your order, upload your file and see exactly where your job is, without calling the shop.'
+        : 'Send your order details below, upload your file, and we’ll confirm the price and release date by text, call or email. No need to line up at the shop.'
+    }
+    {
+      hasApp && (
+        <Fragment slot="actions">
+          <a href={NVAGO_URL} class="btn btn-primary px-7 text-lg" rel="noopener">
+            Open NVAGo <Icon name="external" />
+          </a>
+          <a href={site.social.messenger} class="btn btn-outline" rel="noopener">
+            <Icon name="messenger" /> Need help? Message us
+          </a>
+        </Fragment>
+      )
+    }
+  </PageHero>
+
+  {
+    hasApp ? (
+      <section class="py-14 sm:py-20" aria-labelledby="how-title">
+        <div class="container-x">
+          <SectionHeading id="how-title" label="How it works" title="Four steps, all online." accent="yellow" />
+          <ol class="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            {steps.map((s, i) => (
+              <li class="card crop-marks p-6">
+                <span class="font-display grid size-12 place-items-center rounded-full bg-yellow text-xl" aria-hidden="true">
+                  {i + 1}
+                </span>
+                <h3 class="h3 mt-4">{s.title}</h3>
+                <p class="mt-2 text-grey">{s.text}</p>
+              </li>
+            ))}
+          </ol>
+          <div class="on-ink mt-12 flex flex-col items-start justify-between gap-6 rounded-card bg-ink p-8 text-paper sm:flex-row sm:items-center">
+            <div>
+              <h2 class="h3">Already ordered?</h2>
+              <p class="mt-1 text-on-ink-muted">Open NVAGo and enter your order number to see its status.</p>
+            </div>
+            <a href={NVAGO_URL} class="btn btn-yellow shrink-0" rel="noopener">
+              Track my order <Icon name="arrow" />
+            </a>
+          </div>
+        </div>
+      </section>
+    ) : (
+      <section class="py-12 sm:py-16" aria-labelledby="form-title">
+        <div class="container-x max-w-4xl">
+          <div class="card p-5 sm:p-8">
+            <h2 id="form-title" class="h3 mb-6">Request a quote</h2>
+            <QuoteForm variant="quote" headingId="form-title" />
+          </div>
+        </div>
+      </section>
+    )
+  }
+</Base>
